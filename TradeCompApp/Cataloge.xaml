@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TradeCompApp.Cataloge"
+             Title="Cataloge">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <!-- Поиск товаров -->
+        <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
+
+        <!-- Список товаров -->
+        <ListView x:Name="ProductList" ItemSelected="OnProductSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <HorizontalStackLayout Spacing="10" Padding="10">
+                            <Image Source="{Binding ImageUrl}" WidthRequest="50" HeightRequest="50" />
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}" FontSize="Medium" />
+                                <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" />
+                            </VerticalStackLayout>
+                            <Button Text="Добавить" Clicked="OnAddToCartClicked" CommandParameter="{Binding .}" />
+                        </HorizontalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Кнопки навигации -->
+        <Button Text="Перейти в корзину" Clicked="OnGoToCartClicked" />
+        <Button Text="Назад" Clicked="OnBackClicked" />
+    </VerticalStackLayout>
+</ContentPage>

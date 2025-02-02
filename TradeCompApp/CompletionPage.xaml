@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TradeCompApp.CompletionPage"
+             Title="CompletionPage">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <Label Text="Спасибо за покупку!" FontSize="Large" HorizontalOptions="Center" />
+        <Button Text="Распечатать чек" Clicked="OnPrintReceiptClicked" />
+        <Button Text="Отправить чек по email" Clicked="OnEmailReceiptClicked" />
+      
+    </VerticalStackLayout>
+</ContentPage>
