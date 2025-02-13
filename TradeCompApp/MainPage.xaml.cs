@@ -11,7 +11,7 @@
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Cart());
+            await Navigation.PushAsync(new Cataloge());
            
         }
 

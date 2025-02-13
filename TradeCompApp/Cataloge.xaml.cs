@@ -1,30 +1,34 @@
+using System.Collections.ObjectModel;
+using TradeCompApp.Models;
+using TradeCompApp.ViewModels;
+
+
 namespace TradeCompApp;
 
 public partial class Cataloge : ContentPage
 {
-	public Cataloge()
+
+    public Cataloge()
 	{
 		InitializeComponent();
-	}
-
-    private void OnGoToCartClicked(object sender, EventArgs e)
-    {
-
+        BindingContext = new CatalogeViewModel();
     }
 
-    private void OnBackClicked(object sender, EventArgs e)
+    private async void OnGoToCartClicked(object sender, EventArgs e)
     {
 
+
+        await Navigation.PushAsync(new Cart());
     }
 
-    private void OnAddToCartClicked(object sender, EventArgs e)
+    private async void OnBackClicked(object sender, EventArgs e)
     {
-
+        await Navigation.PopAsync();
     }
 
-    private void OnProductSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnProductSelected(object sender, SelectedItemChangedEventArgs e)
     {
-
+       
     }
 
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)

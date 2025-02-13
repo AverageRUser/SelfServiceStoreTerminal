@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TradeCompApp.MainPage">
+             x:Class="TradeCompApp.MainPage" >
 
     <ScrollView>
         <VerticalStackLayout
@@ -13,9 +13,9 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="200" WidthRequest="500" BackgroundColor="Coral" HorizontalOptions="Center" />
-            <Button Text="Помощь" Clicked="OnHelpClicked" HorizontalOptions="End"  WidthRequest="200"/>
-            <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200" HorizontalOptions="End" />
+            <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="200" WidthRequest="500" HorizontalOptions="Center"  />
+            <Button Text="Помощь" Clicked="OnHelpClicked" HorizontalOptions="Center"  WidthRequest="200"/>
+            <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200" HorizontalOptions="Center" />
         </VerticalStackLayout>
     </ScrollView>
 

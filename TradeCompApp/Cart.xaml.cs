@@ -1,11 +1,16 @@
+using TradeCompApp.Models;
+using TradeCompApp.ViewModels;
+
 namespace TradeCompApp;
 
 public partial class Cart : ContentPage
 {
+  
 	public Cart()
 	{
 		InitializeComponent();
-	}
+        BindingContext = CartViewModel.Instance;
+    }
 
     private async void OnProceedToPaymentClicked(object sender, EventArgs e)
     {
@@ -21,4 +26,6 @@ public partial class Cart : ContentPage
     {
         await Navigation.PushAsync(new Cataloge());
     }
+   
+
 }

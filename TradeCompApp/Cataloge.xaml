@@ -2,13 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.Cataloge"
+              xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
              Title="Cataloge">
     <VerticalStackLayout Spacing="20" Padding="20">
         <!-- Поиск товаров -->
         <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
 
         <!-- Список товаров -->
-        <ListView x:Name="ProductList" ItemSelected="OnProductSelected">
+        <ListView x:Name="ProductList" ItemSelected="OnProductSelected" ItemsSource="{Binding CatalogeProduction}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -18,15 +19,17 @@
                                 <Label Text="{Binding Name}" FontSize="Medium" />
                                 <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" />
                             </VerticalStackLayout>
-                            <Button Text="Добавить" Clicked="OnAddToCartClicked" CommandParameter="{Binding .}" />
+                            <Button Text="Добавить в корзину"
+     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogeViewModel}}, Path=AddToCartCommand}"
+     CommandParameter="{Binding .}" Clicked="OnGoToCartClicked"/>
                         </HorizontalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <!-- <Button  Text="Добавить"  Command="{Binding AddCommand}" CommandParameter="{Binding Source={x:Reference Name=ProductList}, Path=SelectedItem}"  HorizontalOptions="End" Clicked="OnGoToCartClicked"/> -->
         <!-- Кнопки навигации -->
-        <Button Text="Перейти в корзину" Clicked="OnGoToCartClicked" />
+        <Button Text="Вернуться в корзину" Clicked="OnGoToCartClicked" />
         <Button Text="Назад" Clicked="OnBackClicked" />
     </VerticalStackLayout>
 </ContentPage>
