@@ -18,7 +18,7 @@ public partial class CatalogPage : ContentPage
     {
 
 
-        await Navigation.PushAsync(new Cart());
+        await Navigation.PushAsync(new CartPage());
     }
 
     private async void OnBackClicked(object sender, EventArgs e)

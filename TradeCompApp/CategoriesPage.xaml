@@ -4,14 +4,14 @@
              x:Class="TradeCompApp.CategoriesPage"
              xmlns:local="clr-namespace:TradeCompApp"
              xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
-             Title="CategoriesPage">
+             Title="CategoriesPage" >
     <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Выберите категорию:" FontSize="Large" HorizontalOptions="Center" />
 
         <!-- CarouselView для категорий -->
         <CollectionView x:Name="Cv" ItemsSource="{Binding Categories}" 
                     SelectionMode="Single"
-                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"  SelectionChangedCommand="{Binding SelectCategoryCommand}" SelectionChanged="ProductCollection_SelectionChanged">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="3" />
             </CollectionView.ItemsLayout>
@@ -28,6 +28,6 @@
         </CollectionView>
 
         <!-- Кнопка для выбора категории -->
-        <Button Text="Выбрать" Command="{Binding SelectCategoryCommand}" Clicked="OnSelectClicked" />
+        <!-- <Button Text="Выбрать" Command="{Binding SelectCategoryCommand}" Clicked="OnSelectClicked" /> -->
     </VerticalStackLayout>
 </ContentPage>

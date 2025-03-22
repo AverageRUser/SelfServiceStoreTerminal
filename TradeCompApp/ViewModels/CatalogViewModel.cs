@@ -19,6 +19,7 @@ namespace TradeCompApp.ViewModels
         private ObservableCollection<Products> _filteredProducts;
         private string _selectedCategory;
         public ICommand AddToCartCommand => new Command<Products>(AddToCart);
+        public ICommand ResetFilterCommand => new Command(OnResetFilter);
         public ObservableCollection<Products> AllProducts
         {
             get => _products;
@@ -106,6 +107,14 @@ namespace TradeCompApp.ViewModels
         {
            
             CartViewModel.Instance.AddToCart(new CartItem { Product = product, Quantity = 1 });
+        }
+        private void OnResetFilter()
+        {
+            // Сбрасываем выбранную категорию
+            SelectedCategory = null;
+
+            // Отображаем все товары
+            FilteredProducts = new ObservableCollection<Products>(AllProducts);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

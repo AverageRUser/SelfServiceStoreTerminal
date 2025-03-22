@@ -3,10 +3,10 @@ using TradeCompApp.ViewModels;
 
 namespace TradeCompApp;
 
-public partial class Cart : ContentPage
+public partial class CartPage : ContentPage
 {
   
-	public Cart()
+	public CartPage()
 	{
 		InitializeComponent();
         BindingContext = CartViewModel.Instance;

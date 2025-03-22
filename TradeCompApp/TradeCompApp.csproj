@@ -75,7 +75,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Cart.xaml">
+	  <MauiXaml Update="CartPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="CategoriesPage.xaml">
@@ -99,6 +99,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="CartPage.xaml.cs">
+	    <DependentUpon>CartPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="CatalogPage.xaml.cs">
 	    <DependentUpon>CatalogPage.xaml</DependentUpon>
 	  </Compile>

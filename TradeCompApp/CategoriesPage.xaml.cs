@@ -14,7 +14,7 @@ public partial class CategoriesPage : ContentPage
     private async void ProductCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 
-        //await Navigation.PushAsync(new Cataloge());
+        await Navigation.PopAsync();
 
     }
     private void OnSelectClicked(object sender, EventArgs e)
