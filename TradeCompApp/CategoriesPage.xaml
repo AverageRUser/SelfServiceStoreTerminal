@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TradeCompApp.CategoriesPage"
+             xmlns:local="clr-namespace:TradeCompApp"
+             xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
+             Title="CategoriesPage">
+    <VerticalStackLayout Spacing="20" Padding="20">
+        <Label Text="Выберите категорию:" FontSize="Large" HorizontalOptions="Center" />
+
+        <!-- CarouselView для категорий -->
+        <CollectionView x:Name="Cv" ItemsSource="{Binding Categories}" 
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="3" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
+                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Кнопка для выбора категории -->
+        <Button Text="Выбрать" Command="{Binding SelectCategoryCommand}" Clicked="OnSelectClicked" />
+    </VerticalStackLayout>
+</ContentPage>

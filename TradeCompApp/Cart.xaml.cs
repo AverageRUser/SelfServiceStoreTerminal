@@ -24,7 +24,7 @@ public partial class Cart : ContentPage
 
     private async void OnAddManualProductClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Cataloge());
+        await Navigation.PushAsync(new CatalogPage());
     }
    
 

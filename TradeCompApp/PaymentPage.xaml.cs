@@ -1,3 +1,5 @@
+using TradeCompApp.ViewModels;
+
 namespace TradeCompApp;
 
 public partial class PaymentPage : ContentPage
@@ -5,7 +7,8 @@ public partial class PaymentPage : ContentPage
 	public PaymentPage()
 	{
 		InitializeComponent();
-	}
+        BindingContext = CartViewModel.Instance;
+    }
 
     private async void OnPayClicked(object sender, EventArgs e)
     {

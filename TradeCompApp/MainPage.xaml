@@ -13,9 +13,12 @@
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="200" WidthRequest="500" HorizontalOptions="Center"  />
-            <Button Text="Помощь" Clicked="OnHelpClicked" HorizontalOptions="Center"  WidthRequest="200"/>
-            <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200" HorizontalOptions="Center" />
+            <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="500" WidthRequest="1000" HorizontalOptions="CenterAndExpand"  />
+            <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="250">
+                <Button Text="Помощь" Clicked="OnHelpClicked"  WidthRequest="200" HorizontalOptions="Fill"/>
+                <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200"   />
+            </HorizontalStackLayout>
+          
         </VerticalStackLayout>
     </ScrollView>
 

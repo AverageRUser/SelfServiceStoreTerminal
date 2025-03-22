@@ -5,12 +5,11 @@
              Title="Cash">
     <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Сумма к оплате:" FontSize="Large" />
-        <Label x:Name="TotalAmountLabel" FontSize="Medium" />
+        <Label x:Name="TotalAmountLabel" FontSize="Medium"  Text="{Binding TotalPrice, StringFormat='{0:C}'}" />
         <Picker x:Name="PaymentMethodPicker" Title="Выберите способ оплаты">
             <Picker.Items>
                 <x:String>Карта</x:String>
-                <x:String>Наличные</x:String>
-                <x:String>Мобильный платеж</x:String>
+                <x:String>СБП</x:String>
             </Picker.Items>
         </Picker>
         <Button Text="Оплатить" Clicked="OnPayClicked" />

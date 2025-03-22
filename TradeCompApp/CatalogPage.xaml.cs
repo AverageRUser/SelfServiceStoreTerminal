@@ -5,13 +5,13 @@ using TradeCompApp.ViewModels;
 
 namespace TradeCompApp;
 
-public partial class Cataloge : ContentPage
+public partial class CatalogPage : ContentPage
 {
 
-    public Cataloge()
+    public CatalogPage()
 	{
 		InitializeComponent();
-        BindingContext = new CatalogeViewModel();
+        BindingContext = new CatalogViewModel();
     }
 
     private async void OnGoToCartClicked(object sender, EventArgs e)
@@ -31,6 +31,12 @@ public partial class Cataloge : ContentPage
        
     }
 
+    private async void OnSelectCategoryClicked(object sender, EventArgs e)
+    {
+        var categorySelectionPage = new CategoriesPage();
+      
+        await Navigation.PushAsync(categorySelectionPage);
+    }
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
 

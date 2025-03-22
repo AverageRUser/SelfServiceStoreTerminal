@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TradeCompApp.CatalogPage"
+              xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
+             Title="Catalog">
+  
+    <VerticalStackLayout Spacing="20" Padding="20">
+      
+        <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
+        <Button Text="Select Category"  Clicked="OnSelectCategoryClicked" />
+        <Button Text="Сбросить категории" Clicked="OnSelectCategoryClicked" />
+        <!-- Список товаров -->
+        <CollectionView x:Name="ProductList" HeightRequest="500"   ItemsSource="{Binding FilteredProducts}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
+                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
+                            <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" HorizontalOptions="Center" />
+                            <Button Text="Добавить в корзину"
+     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, Path=AddToCartCommand}"
+     CommandParameter="{Binding .}" Clicked="OnGoToCartClicked" />
+                        </VerticalStackLayout>
+
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <!-- <Button  Text="Добавить"  Command="{Binding AddCommand}" CommandParameter="{Binding Source={x:Reference Name=ProductList}, Path=SelectedItem}"  HorizontalOptions="End" Clicked="OnGoToCartClicked"/> -->
+        <!-- Кнопки навигации -->
+        <Button Text="Вернуться в корзину" Clicked="OnGoToCartClicked" />
+        <Button Text="Назад" Clicked="OnBackClicked" />
+    </VerticalStackLayout>
+</ContentPage>

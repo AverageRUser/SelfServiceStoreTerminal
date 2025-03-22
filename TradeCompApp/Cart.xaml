@@ -5,28 +5,32 @@
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
              Title="Cart">
     <VerticalStackLayout Spacing="20" Padding="20">
+        <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
+        <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />
         <Label Text="Ваши товары:" FontSize="Large" />
         <ListView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Background="Aqua">
                             <Label Text="{Binding Product.Name}" FontSize="Medium" />
                             <Label Text="{Binding Product.Price, StringFormat='{0:C}'}" FontSize="Small" />
                            
                             <Button Text="Удалить"
            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveCommand}"
-           CommandParameter="{Binding .}" />
+           CommandParameter="{Binding .}" HorizontalOptions="End" />
                         </HorizontalStackLayout>
                         
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-     
-        <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}" />
-        <Button Text="Добавить товар вручную" Clicked="OnAddManualProductClicked" />
+        <HorizontalStackLayout Spacing="20">
+            
+        
+        
         <Button Text="Перейти к оплате" Clicked="OnProceedToPaymentClicked" />
-        <Button Text="Продолжить покупки" Clicked="OnContinueShoppingClicked" />
+            <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}" FontSize="Large"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
