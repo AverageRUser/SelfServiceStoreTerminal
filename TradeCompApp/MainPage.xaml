@@ -4,6 +4,7 @@
              x:Class="TradeCompApp.MainPage" >
 
     <ScrollView>
+        
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
@@ -16,7 +17,7 @@
             <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="500" WidthRequest="1000" HorizontalOptions="CenterAndExpand"  />
             <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="250">
                 <Button Text="Помощь" Clicked="OnHelpClicked"  WidthRequest="200" HorizontalOptions="Fill"/>
-                <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200"   />
+                
             </HorizontalStackLayout>
            
         </VerticalStackLayout>
