@@ -17,9 +17,20 @@ namespace TradeCompApp.ViewModels
     {
         private ObservableCollection<Products> _products;
         private ObservableCollection<Products> _filteredProducts;
+        private bool _visibilityfilter;
         private string _selectedCategory;
+        private Products _selectedProduct;
         public ICommand AddToCartCommand => new Command<Products>(AddToCart);
         public ICommand ResetFilterCommand => new Command(OnResetFilter);
+        public bool VisibilityFilter
+        {
+            get => _visibilityfilter;
+            set
+            {
+                _visibilityfilter = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<Products> AllProducts
         {
             get => _products;
@@ -45,12 +56,24 @@ namespace TradeCompApp.ViewModels
             set
             {
                 _selectedCategory = value;
+                VisibilityFilter = !string.IsNullOrEmpty(value);
                 FilterProductsByCategory();
+                OnPropertyChanged();
+            }
+        }
+        public Products SelectedProduct
+        {
+            get => _selectedProduct;
+            set
+            {
+                _selectedProduct = value;
+                
                 OnPropertyChanged();
             }
         }
         public CatalogViewModel()
         {
+           
             LoadProducts();
             FilteredProducts = new ObservableCollection<Products>(AllProducts);
             MessagingCenter.Subscribe<CategoryViewModel, string>(this, "CategorySelected", (sender, categoryId) =>
@@ -69,6 +92,7 @@ namespace TradeCompApp.ViewModels
                 var filtered = AllProducts.Where(p => p.Type == SelectedCategory).ToList();
                 FilteredProducts = new ObservableCollection<Products>(filtered);
             }
+           
         }
         public void LoadProducts()
         {
@@ -87,26 +111,13 @@ namespace TradeCompApp.ViewModels
 
             // Изначально отображаем все товары
             FilteredProducts = new ObservableCollection<Products>(AllProducts);
-
+            
         }
-        public void FilterProductsByCategory(string categoryId)
-        {
-            if (string.IsNullOrEmpty(categoryId))
-            {
-                // Если категория не выбрана, показываем все товары
-                FilteredProducts = new ObservableCollection<Products>(AllProducts);
-            }
-            else
-            {
-                // Фильтруем товары по выбранной категории
-                var filtered = AllProducts.Where(p => p.Type == categoryId).ToList();
-                FilteredProducts = new ObservableCollection<Products>(filtered);
-            }
-        }
+       
         private void AddToCart(Products product)
         {
            
-            CartViewModel.Instance.AddToCart(new CartItem { Product = product, Quantity = 1 });
+            CartViewModel.Instance.AddToCart(new CartItem { Product = SelectedProduct, Quantity = 1 });
         }
         private void OnResetFilter()
         {
@@ -115,6 +126,7 @@ namespace TradeCompApp.ViewModels
 
             // Отображаем все товары
             FilteredProducts = new ObservableCollection<Products>(AllProducts);
+          
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

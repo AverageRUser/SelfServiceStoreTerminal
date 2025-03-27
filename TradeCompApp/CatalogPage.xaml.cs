@@ -26,19 +26,19 @@ public partial class CatalogPage : ContentPage
         await Navigation.PopAsync();
     }
 
-    private async void OnProductSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-       
-    }
+  
 
     private async void OnSelectCategoryClicked(object sender, EventArgs e)
     {
-        var categorySelectionPage = new CategoriesPage();
-      
-        await Navigation.PushAsync(categorySelectionPage);
+        await Navigation.PushAsync(new CategoriesPage());
     }
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
 
+    }
+
+    private async void ProductList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        await Navigation.PushAsync(new CartPage());
     }
 }

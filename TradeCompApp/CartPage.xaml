@@ -5,10 +5,9 @@
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
              Title="Cart">
     <VerticalStackLayout Spacing="20" Padding="20">
-        <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
-        <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />
+      
         <Label Text="Ваши товары:" FontSize="Large" />
-        <ListView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}">
+        <ListView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}" HeightRequest="700">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -26,10 +25,11 @@
             </ListView.ItemTemplate>
         </ListView>
         <HorizontalStackLayout Spacing="20">
-            
-        
-        
-        <Button Text="Перейти к оплате" Clicked="OnProceedToPaymentClicked" />
+
+
+            <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
+            <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />
+            <Button Text="Перейти к оплате" Clicked="OnProceedToPaymentClicked" />
             <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}" FontSize="Large"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>

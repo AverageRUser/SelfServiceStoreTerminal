@@ -18,7 +18,7 @@
                 <Button Text="Помощь" Clicked="OnHelpClicked"  WidthRequest="200" HorizontalOptions="Fill"/>
                 <Button Text="Настройки" Clicked="OnSettingsClicked" WidthRequest="200"   />
             </HorizontalStackLayout>
-          
+           
         </VerticalStackLayout>
     </ScrollView>
 

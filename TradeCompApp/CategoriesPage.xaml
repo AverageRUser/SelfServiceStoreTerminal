@@ -27,7 +27,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Кнопка для выбора категории -->
-        <!-- <Button Text="Выбрать" Command="{Binding SelectCategoryCommand}" Clicked="OnSelectClicked" /> -->
+     
     </VerticalStackLayout>
 </ContentPage>
