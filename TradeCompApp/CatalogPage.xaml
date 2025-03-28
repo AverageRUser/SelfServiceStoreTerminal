@@ -4,38 +4,72 @@
              x:Class="TradeCompApp.CatalogPage"
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
              Title="Catalog" >
-  
-    <VerticalStackLayout Spacing="20" Padding="20" >
-      
-        <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
-        
-        
-        <!-- Список товаров -->
-        <CollectionView x:Name="ProductList" HeightRequest="700" SelectionMode="Single"   ItemsSource="{Binding FilteredProducts}"  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"  SelectionChangedCommand="{Binding AddToCartCommand}" SelectionChanged="ProductList_SelectionChanged">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
-                        <VerticalStackLayout Spacing="10">
-                            <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
-                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
-                            <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" HorizontalOptions="Center" />
-                            
-                        </VerticalStackLayout>
+    <Grid ColumnDefinitions="Auto, *">
+        <Frame x:Name="FiltersPanel" WidthRequest="300" HorizontalOptions="Start" TranslationX="-310" BackgroundColor="#f5f5f5" IsVisible="False" >
+            <VerticalStackLayout Spacing="20">
+                <HorizontalStackLayout >
+                    <Label Text="Фильтры" FontSize="Title" HorizontalOptions="Start"/>
+                    <Button Text="✕" Clicked="FilterPanel_Close"
+    HorizontalOptions="End"/>
 
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <HorizontalStackLayout Spacing="20">
-            <Button Text="Выбрать категорию"  Clicked="OnSelectCategoryClicked" />
-            <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" />
-            <Button Text="Вернуться в корзину" Clicked="OnGoToCartClicked" />
-        </HorizontalStackLayout>
-        <!-- Кнопки навигации -->
-      
-       <!-- <Button Text="Назад" Clicked="OnBackClicked" /> -->
-    </VerticalStackLayout>
+                </HorizontalStackLayout>
+                <Label FontSize="18" Margin="5"
+Text="{Binding SelectedCategory, StringFormat='Выбранная категория: {0}'}" />
+                <Label Text="Характеристики" FontSize="Subtitle"/>
+                <!-- Контент фильтров -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Filters}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
+                                <Picker 
+                   Title="Выберите значение"
+                   ItemsSource="{Binding AvailableValues}"
+                   SelectedItem="{Binding SelectedValue, Mode=TwoWay}">
+
+                                </Picker>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+                <Button Text="Применить фильтр" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, 
+   Path=ApplyFiltersCommand}"/>
+            </VerticalStackLayout>
+
+        </Frame>
+        <VerticalStackLayout Spacing="20" Padding="20" Grid.Column="1">
+
+            <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
+
+
+            <!-- Список товаров -->
+            <CollectionView x:Name="ProductList" HeightRequest="700" SelectionMode="Single"   ItemsSource="{Binding FilteredProducts}"  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"  SelectionChangedCommand="{Binding AddToCartCommand}" SelectionChanged="ProductList_SelectionChanged">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0" >
+                            <VerticalStackLayout Spacing="10">
+                                <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
+                                <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
+                                <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" HorizontalOptions="Center" />
+
+                            </VerticalStackLayout>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <HorizontalStackLayout Spacing="20">
+                <Button Text="Выбрать категорию"  Clicked="OnSelectCategoryClicked" />
+                <Button Text="Фильтры" Clicked="FilterPanel_Open"  />
+                <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" />
+                <Button Text="Вернуться в корзину" Clicked="OnGoToCartClicked" />
+            </HorizontalStackLayout>
+            <!-- Кнопки навигации -->
+
+            <!-- <Button Text="Назад" Clicked="OnBackClicked" /> -->
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

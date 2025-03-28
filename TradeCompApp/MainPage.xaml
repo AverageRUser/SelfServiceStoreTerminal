@@ -4,21 +4,14 @@
              x:Class="TradeCompApp.MainPage" >
 
     <ScrollView>
-        
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-           
-            <Label
-                Text="Добро пожаловать!"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+      
+        <VerticalStackLayout Padding="30,0" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
 
-            <Button Text="Начать покупки"  Clicked="OnCounterClicked"  HeightRequest="500" WidthRequest="1000" HorizontalOptions="CenterAndExpand"  />
-            <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="250">
-                <Button Text="Помощь" Clicked="OnHelpClicked"  WidthRequest="200" HorizontalOptions="Fill"/>
-                
-            </HorizontalStackLayout>
+            <Label   Text="Добро пожаловать!" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level1" />
+
+            <Button Text="Выбрать товар в каталоге"  Clicked="OnCounterClicked"   WidthRequest="400" HeightRequest="80" FontSize="18" CornerRadius="10"  />
+            <Button Text="Помощь сотрудника" Clicked="OnHelpClicked"   WidthRequest="400" HeightRequest="60" FontSize="16" CornerRadius="8"/>
+         
            
         </VerticalStackLayout>
     </ScrollView>

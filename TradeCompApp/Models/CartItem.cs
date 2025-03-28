@@ -8,7 +8,7 @@ namespace TradeCompApp.Models
 {
     class CartItem
     {
-        public Products Product { get; set; }
+        public Product Product { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice => Product.Price * Quantity;
     }

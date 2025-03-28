@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TradeCompApp.Models
 {
-    public class Products : INotifyPropertyChanged
+    public class Product : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
@@ -68,6 +68,16 @@ namespace TradeCompApp.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-       
+        public List<TechSpec> Specs { get; set; }
     }
+    public class TechSpec
+    {
+        public string Name { get; set; } 
+
+        public string Value { get; set; } 
+        public string Unit { get; set; } 
+    }
+
+
+
 }
