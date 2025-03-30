@@ -7,25 +7,65 @@
     <VerticalStackLayout Spacing="20" Padding="20">
       
         <Label Text="Ваши товары:" FontSize="Large" />
-        <ListView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}" HeightRequest="700">
-            <ListView.ItemTemplate>
+
+        <CollectionView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}" HeightRequest="700" >
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <HorizontalStackLayout Background="Aqua">
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                               
+                                <RowDefinition Height="*" />
+                               
+                            </Grid.RowDefinitions>
+                            <HorizontalStackLayout Background="Aqua" Grid.Row="0">
                             <Label Text="{Binding Product.Name}" FontSize="Medium" />
                             <Label Text="{Binding Product.Price, StringFormat='{0:C}'}" FontSize="Small" />
-                           
+                            <!--Кастомный Stepper-->
+                            <Frame  CornerRadius="5"  BorderColor="#E0E0E0" BackgroundColor="White" HasShadow="True"  Padding="0">
+                                
+                                <HorizontalStackLayout  Spacing="0">
+                                    <Button Text="-" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=DistQuantityCommand}"
+CommandParameter="{Binding .}"    BackgroundColor="Transparent" TextColor="Black" FontSize="Medium" WidthRequest="40" IsEnabled="{Binding ButtonIsEnabled}"/>
+                                    
+                                    <BoxView   WidthRequest="1"  Color="#E0E0E0"  VerticalOptions="FillAndExpand" />
+                                    <Label Text="{Binding Quantity}" FontSize="Medium"  VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="40" />
+                                    <BoxView   WidthRequest="1"  Color="#E0E0E0"  VerticalOptions="FillAndExpand" />
+                                    
+                                    <Button Text="+" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=AddQuantityCommand}" 
+            CommandParameter="{Binding .}"  BackgroundColor="Transparent"  TextColor="Black" FontSize="Medium" WidthRequest="40" />
+                                </HorizontalStackLayout>
+                            </Frame>
+                            
                             <Button Text="Удалить"
            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveCommand}"
            CommandParameter="{Binding .}" HorizontalOptions="End" />
+                            
                         </HorizontalStackLayout>
-                        
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <HorizontalStackLayout Spacing="20">
+                            <FlexLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Services}"  BackgroundColor="#A9BE6B" Wrap="NoWrap" Direction="Row" AlignItems="Start" >
 
+                                <BindableLayout.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <HorizontalStackLayout Padding="10" >
+
+                                            <CheckBox IsChecked="{Binding IsSectetedService,Mode=TwoWay}" VerticalOptions="Center"/>
+                                            <Label Text="{Binding Name}" FontSize="16" VerticalOptions="Center"/>
+                                            <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green" VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <HorizontalStackLayout Spacing="20">
+            
 
             <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
             <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />

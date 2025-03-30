@@ -26,15 +26,9 @@ public partial class CatalogPage : ContentPage
         await Navigation.PopAsync();
     }
 
-  
-
     private async void OnSelectCategoryClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new CategoriesPage());
-    }
-    private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
-    {
-
     }
 
     private async void ProductList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -54,7 +48,7 @@ public partial class CatalogPage : ContentPage
         {
             // Закрываем
             FiltersPanel.TranslateTo(-FiltersPanel.Width, 0, 250, Easing.CubicIn);
-            FiltersPanel.IsVisible = false;
+          FiltersPanel.IsVisible = false;
         }
 
     }

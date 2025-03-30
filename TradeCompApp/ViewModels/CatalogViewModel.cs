@@ -20,18 +20,25 @@ namespace TradeCompApp.ViewModels
         private ObservableCollection<FilterOption> _filters;
         private bool _visibilityfilter;
         private string _selectedCategory;
+        private string _searchText;
         private Product _selectedProduct;
         public ICommand AddToCartCommand => new Command<Product>(AddToCart);
         public ICommand ResetFilterCommand => new Command(OnResetFilter);
-        public bool VisibilityFilter
+        public ICommand SearchCommand => new Command(ExecuteSearch);
+        public ICommand ApplyFiltersCommand => new Command(() =>
         {
-            get => _visibilityfilter;
-            set
+            var filtered = AllProducts.AsEnumerable();
+
+            foreach (var filter in Filters.Where(f => !string.IsNullOrEmpty(f.SelectedValue)))
             {
-                _visibilityfilter = value;
-                OnPropertyChanged();
+                filtered = filtered.Where(p =>
+                    p.Specs.Any(s =>
+                        s.Name == filter.Name &&
+                        s.Value == filter.SelectedValue));
             }
-        }
+
+            FilteredProducts = new ObservableCollection<Product>(filtered);
+        });
         public ObservableCollection<Product> AllProducts
         {
             get => _products;
@@ -71,6 +78,21 @@ namespace TradeCompApp.ViewModels
                 OnPropertyChanged();
             }
         }
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged();
+                    ExecuteSearch();
+                }
+            }
+        }
+
+
         public Product SelectedProduct
         {
             get => _selectedProduct;
@@ -78,6 +100,15 @@ namespace TradeCompApp.ViewModels
             {
                 _selectedProduct = value;
                 
+                OnPropertyChanged();
+            }
+        }
+        public bool VisibilityFilter
+        {
+            get => _visibilityfilter;
+            set
+            {
+                _visibilityfilter = value;
                 OnPropertyChanged();
             }
         }
@@ -90,6 +121,18 @@ namespace TradeCompApp.ViewModels
             {
                 SelectedCategory = categoryId;
             });
+        }
+        private void ExecuteSearch()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredProducts = new ObservableCollection<Product>(AllProducts);
+            }
+            else
+            {
+                var filtered = AllProducts.Where(item => item.Name.Contains(SearchText,StringComparison.OrdinalIgnoreCase)).ToList();
+                FilteredProducts = new ObservableCollection<Product>(filtered);
+            }
         }
         public void FilterProductsByCategory()
         {
@@ -122,26 +165,13 @@ namespace TradeCompApp.ViewModels
                 });
             }
         }
-        public ICommand ApplyFiltersCommand => new Command(() =>
-        {
-            var filtered = AllProducts.AsEnumerable();
-
-            foreach (var filter in Filters.Where(f => !string.IsNullOrEmpty(f.SelectedValue)))
-            {
-                filtered = filtered.Where(p =>
-                    p.Specs.Any(s =>
-                        s.Name == filter.Name &&
-                        s.Value == filter.SelectedValue));
-            }
-
-            FilteredProducts = new ObservableCollection<Product>(filtered);
-        });
+       
         public void LoadProducts()
         {
             
             AllProducts = new ObservableCollection<Product>
             {
-                  new Product { Name = "Телевизор Samsung 4K", Price = 50000, ImageUrl = "tv1.png", Type = "TV", Specs = new List<TechSpec>{
+                  new Product { Name = "Телевизор Samsung 4K", Price = 50000, ImageUrl = "dotnet_bot.png", Type = "TV", Specs = new List<TechSpec>{
         new TechSpec { Name = "Диагональ", Value = "55", Unit = "дюймов" },
         new TechSpec { Name = "Разрешение", Value = "3840x2160" },
         new TechSpec{ Name = "Тип матрицы", Value = "QLED" },

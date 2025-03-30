@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace TradeCompApp.Models
 {
-    public class Product : INotifyPropertyChanged
+    public class ProductService : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
         private decimal _price;
-        private string _imagepath;
-        private string _type;
-        public string Name { 
+        private bool _isSectetedService;
+        public string Name
+        {
             get => _name;
-            set 
+            set
             {
                 if (_name != value)
                 {
@@ -39,44 +38,24 @@ namespace TradeCompApp.Models
                 }
             }
         }
-        public string ImageUrl
+        public bool IsSectetedService
         {
-            get => _imagepath;
+            get => _isSectetedService;
             set
             {
-                if (_imagepath != value)
+                if (_isSectetedService != value)
                 {
-                    _imagepath = value;
+                    _isSectetedService = value;
+
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(Price));
                 }
             }
         }
-        public string Type
-        {
-            get => _type;
-            set
-            {
-                if (_type != value)
-                {
-                    _type = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public string Category { get; set; }
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public List<TechSpec> Specs { get; set; }
     }
-    public class TechSpec
-    {
-        public string Name { get; set; } 
-
-        public string Value { get; set; } 
-        public string Unit { get; set; } 
-    }
-
-
-
 }

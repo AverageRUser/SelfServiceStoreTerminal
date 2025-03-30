@@ -10,10 +10,10 @@
                 <HorizontalStackLayout >
                     <Label Text="Фильтры" FontSize="Title" HorizontalOptions="Start"/>
                     <Button Text="✕" Clicked="FilterPanel_Close"
-    HorizontalOptions="End"/>
+    HorizontalOptions="End" Margin="103,0" />
 
                 </HorizontalStackLayout>
-                <Label FontSize="18" Margin="5"
+                <Label FontSize="18"
 Text="{Binding SelectedCategory, StringFormat='Выбранная категория: {0}'}" />
                 <Label Text="Характеристики" FontSize="Subtitle"/>
                 <!-- Контент фильтров -->
@@ -21,7 +21,7 @@ Text="{Binding SelectedCategory, StringFormat='Выбранная категор
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <VerticalStackLayout>
-                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
+                                <Label Text="{Binding Name}" FontSize="16" />
                                 <Picker 
                    Title="Выберите значение"
                    ItemsSource="{Binding AvailableValues}"
@@ -39,37 +39,66 @@ Text="{Binding SelectedCategory, StringFormat='Выбранная категор
         </Frame>
         <VerticalStackLayout Spacing="20" Padding="20" Grid.Column="1">
 
-            <SearchBar x:Name="SearchBar" Placeholder="Поиск товаров..." TextChanged="OnSearchTextChanged" />
+            <SearchBar x:Name="SearchBar" Text="{Binding SearchText}" Placeholder="Поиск товаров..." SearchCommand="{Binding SearchCommand}" />
 
 
             <!-- Список товаров -->
             <CollectionView x:Name="ProductList" HeightRequest="700" SelectionMode="Single"   ItemsSource="{Binding FilteredProducts}"  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"  SelectionChangedCommand="{Binding AddToCartCommand}" SelectionChanged="ProductList_SelectionChanged">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" />
-                </CollectionView.ItemsLayout>
+            
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0" >
-                            <VerticalStackLayout Spacing="10">
-                                <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
-                                <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
-                                <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small" HorizontalOptions="Center" />
+                        <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0"  >
+                           
+                            <Grid Padding="10" RowSpacing="5" ColumnSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding ImageUrl, FallbackValue='dotnet_bot.png'}" HeightRequest="150" Aspect="AspectFill" Grid.RowSpan="3" />
+                              
+                              
+                                    <HorizontalStackLayout Spacing="10" Grid.Row="0" Grid.Column="1">
 
-                            </VerticalStackLayout>
+                                        <Label Text="{Binding Name}" FontSize="Medium"  />
+                                        <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small"  />
+                                    </HorizontalStackLayout>
+                                    <FlexLayout BindableLayout.ItemsSource="{Binding Specs}"  Wrap="NoWrap" Direction="Row" AlignItems="Start" Grid.Column="1" Grid.Row="1" >
 
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <HorizontalStackLayout Spacing="5">
+                                                    <Label Text="{Binding Name}" FontSize="Small" />
+                                                    <Label Text="{Binding Value, StringFormat='{0:C}'}" FontSize="Small" />
+                                                <Label Text="{Binding Unit}" FontSize="Small" />
+                                                <Label Text= " "/>
+                                                </HorizontalStackLayout>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </FlexLayout>
+                               
+                                
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            
             <HorizontalStackLayout Spacing="20">
+                <Button Text="Назад" Clicked="OnBackClicked" />
                 <Button Text="Выбрать категорию"  Clicked="OnSelectCategoryClicked" />
-                <Button Text="Фильтры" Clicked="FilterPanel_Open"  />
+                <Button Text="Фильтры" Clicked="FilterPanel_Open" IsVisible="{Binding VisibilityFilter}"  />
                 <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" />
-                <Button Text="Вернуться в корзину" Clicked="OnGoToCartClicked" />
+                <Button Text="Корзина" Clicked="OnGoToCartClicked" />
+              
             </HorizontalStackLayout>
-            <!-- Кнопки навигации -->
+         
 
-            <!-- <Button Text="Назад" Clicked="OnBackClicked" /> -->
+             
         </VerticalStackLayout>
     </Grid>
 </ContentPage>
