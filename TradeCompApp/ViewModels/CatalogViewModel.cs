@@ -147,6 +147,7 @@ namespace TradeCompApp.ViewModels
             }
            
         }
+
         private void InitializeFilters()
         {
             Filters = new ObservableCollection<FilterOption>();

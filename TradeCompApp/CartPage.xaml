@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.CartPage"
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
+              xmlns:behavior="clr-namespace:TradeCompApp.Models.Behaviors"
              Title="Cart">
     <VerticalStackLayout Spacing="20" Padding="20">
       
@@ -51,7 +52,9 @@ CommandParameter="{Binding .}"    BackgroundColor="Transparent" TextColor="Black
 
                                         <HorizontalStackLayout Padding="10" >
 
-                                            <CheckBox IsChecked="{Binding IsSectetedService,Mode=TwoWay}" VerticalOptions="Center"/>
+                                            <CheckBox IsChecked="{Binding IsSelectedService,Mode=TwoWay}" VerticalOptions="Center" >
+                                                
+                                            </CheckBox>
                                             <Label Text="{Binding Name}" FontSize="16" VerticalOptions="Center"/>
                                             <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green" VerticalOptions="Center" />
                                         </HorizontalStackLayout>
@@ -70,7 +73,7 @@ CommandParameter="{Binding .}"    BackgroundColor="Transparent" TextColor="Black
             <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
             <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />
             <Button Text="Перейти к оплате" Clicked="OnProceedToPaymentClicked" />
-            <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}" FontSize="Large"/>
+            <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}',Mode=TwoWay}" FontSize="Large"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

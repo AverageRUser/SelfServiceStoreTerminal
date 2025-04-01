@@ -21,11 +21,12 @@ namespace TradeCompApp.ViewModels
         private Dictionary<string, ObservableCollection<ProductService>> _categoryServices;
        
         private bool _isEnabled;
-   
+        
         public static CartViewModel Instance => _instance ??= new CartViewModel();
         public ICommand RemoveCommand { get; set; }
         public ICommand AddQuantityCommand { get; set; }
         public ICommand DistQuantityCommand { get; set; }
+        public ICommand ServiceCheckedCommand => new Command<ProductService>(OnServiceCheckedChanged);
         public ObservableCollection<CartItem> CartProduction { get; } = new();
        
         public decimal TotalPrice => CartProduction.Sum(item => item.TotalPrice);
@@ -79,7 +80,14 @@ namespace TradeCompApp.ViewModels
             });
 
         }
-      
+        private void OnServiceCheckedChanged(ProductService service)
+        {
+            // Находим родительский CartItem, которому принадлежит услуга
+            var cartItem = CartProduction.FirstOrDefault(item => item.Services.Contains(service));
+            cartItem?.OnPropertyChanged(nameof(CartItem.TotalPrice));
+
+            OnPropertyChanged(nameof(TotalPrice));
+        }
         private void InitializeSevices()
         {
             _categoryServices = new Dictionary<string, ObservableCollection<ProductService>>
@@ -121,6 +129,7 @@ namespace TradeCompApp.ViewModels
                 item.Services = new ObservableCollection<ProductService>(services);
             }
             CartProduction.Add(item);
+          
 
             OnPropertyChanged(nameof(TotalPrice));
         }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm;
+
 
 namespace TradeCompApp
 {
@@ -18,6 +20,7 @@ namespace TradeCompApp
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+           
 
             return builder.Build();
         }

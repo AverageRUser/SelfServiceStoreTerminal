@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using TradeCompApp.ViewModels;
 
 namespace TradeCompApp.Models
 {
@@ -13,7 +14,7 @@ namespace TradeCompApp.Models
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _name;
         private decimal _price;
-        private bool _isSectetedService;
+        private bool _isSelectedService;
         public string Name
         {
             get => _name;
@@ -38,21 +39,22 @@ namespace TradeCompApp.Models
                 }
             }
         }
-        public bool IsSectetedService
+        public bool IsSelectedService
         {
-            get => _isSectetedService;
+            get => _isSelectedService;
             set
             {
-                if (_isSectetedService != value)
+                if (_isSelectedService != value)
                 {
-                    _isSectetedService = value;
+                    _isSelectedService = value;
+
 
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(Price));
+                  CartViewModel.Instance.OnPropertyChanged(nameof(CartViewModel.TotalPrice));
                 }
             }
         }
-        public string Category { get; set; }
+        public string? Category { get; set; }
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
