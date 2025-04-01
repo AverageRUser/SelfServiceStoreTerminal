@@ -92,7 +92,7 @@ Text="{Binding SelectedCategory, StringFormat='Выбранная категор
                 <Button Text="Назад" Clicked="OnBackClicked" />
                 <Button Text="Выбрать категорию"  Clicked="OnSelectCategoryClicked" />
                 <Button Text="Фильтры" Clicked="FilterPanel_Open" IsVisible="{Binding VisibilityFilter}"  />
-                <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" />
+                <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" Clicked="FilterPanel_Close"/>
                 <Button Text="Корзина" Clicked="OnGoToCartClicked" />
               
             </HorizontalStackLayout>
