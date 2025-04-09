@@ -12,6 +12,7 @@ namespace TradeCompApp.Models
     public class ProductService : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        public int Id { get; set; }
         private string _name;
         private decimal _price;
         private bool _isSelectedService;
@@ -54,7 +55,7 @@ namespace TradeCompApp.Models
                 }
             }
         }
-        public string? Category { get; set; }
+        public int? CategoryId { get; set; }
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

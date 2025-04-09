@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
+using TradeCompApp.Database;
 using TradeCompApp.Models;
 
 namespace TradeCompApp.ViewModels
@@ -17,14 +18,20 @@ namespace TradeCompApp.ViewModels
     {
         public ICommand SelectCategoryCommand => new Command(OnSelectCategory);
         private Category _selectedCategory;
-        public ObservableCollection<Category> Categories { get; set; } = new()
+        private ObservableCollection<Category> _category;
+        private readonly DatabaseService _databaseService;
+        public ObservableCollection<Category> Categories
         {
-             new Category { Name = "Телевизоры", ImageUrl = "tv_category.png", CategoryId = "TV" },
-                new Category { Name = "Ноутбуки", ImageUrl = "laptop_category.png", CategoryId = "Laptops" },
-                new Category { Name = "Смартфоны", ImageUrl = "phone_category.png", CategoryId = "Smartphones" },
-                new Category { Name = "Бытовая техника", ImageUrl = "appliance_category.png", CategoryId = "Appliances" }
+            get => _category;
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+            }
+        }
 
-         };
+        
+
         public Category SelectedCategory
         {
             get => _selectedCategory;
@@ -36,14 +43,31 @@ namespace TradeCompApp.ViewModels
         }
         public CategoryViewModel()
         {
-           
-           
+            _databaseService = new DatabaseService();
+            LoadCategories();
+        }
+        public async void LoadCategories()
+        {
+            try
+            {
+                var category = await _databaseService.GetAllCategories();
+                Categories = new ObservableCollection<Category>(category);
+            }
+            catch (Exception ex)
+            {
+                Categories = new ObservableCollection<Category>() {
+                new Category { Name = "Телевизоры", ImageUrl = "tv_category.png", Id = 1 },
+            new Category { Name = "Ноутбуки", ImageUrl = "laptop_category.png", Id = 4},
+            new Category { Name = "Смартфоны", ImageUrl = "phone_category.png", Id = 2 },
+            new Category { Name = "Бытовая техника", ImageUrl = "appliance_category.png", Id = 3 }
+            };
+            }
         }
         private void OnSelectCategory()
         {
             if (SelectedCategory != null)
             {
-                MessagingCenter.Send(this, "CategorySelected", SelectedCategory.CategoryId);
+                MessagingCenter.Send(this, "CategorySelected", SelectedCategory.Id);
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;

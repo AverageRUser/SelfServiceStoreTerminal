@@ -56,6 +56,7 @@ public partial class CatalogPage : ContentPage
 
     private void FilterPanel_Close(object sender, EventArgs e)
     {
+       
         FiltersPanel.TranslateTo(-FiltersPanel.Width, 0, 250, Easing.CubicIn);
         FiltersPanel.IsVisible = false;
     }

@@ -1,4 +1,6 @@
-﻿namespace TradeCompApp
+﻿using TradeCompApp.ViewModels;
+
+namespace TradeCompApp
 {
     public partial class App : Application
     {
@@ -7,6 +9,10 @@
             InitializeComponent();
 
             MainPage = new AppShell();
+        }
+        protected override async void OnStart()
+        {
+            await CartViewModel.Instance.InitializeSevices();
         }
     }
 }

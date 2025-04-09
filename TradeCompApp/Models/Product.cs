@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,7 +17,10 @@ namespace TradeCompApp.Models
         private string _name;
         private decimal _price;
         private string _imagepath;
-        private string _type;
+        private int _categoryId;
+
+        public int ProductId { get; set; }
+
         public string Name { 
             get => _name;
             set 
@@ -39,6 +44,7 @@ namespace TradeCompApp.Models
                 }
             }
         }
+      
         public string ImageUrl
         {
             get => _imagepath;
@@ -51,14 +57,15 @@ namespace TradeCompApp.Models
                 }
             }
         }
-        public string Type
+      
+        public int CategoryId
         {
-            get => _type;
+            get => _categoryId;
             set
             {
-                if (_type != value)
+                if (_categoryId != value)
                 {
-                    _type = value;
+                    _categoryId = value;
                     OnPropertyChanged();
                 }
             }
@@ -71,10 +78,18 @@ namespace TradeCompApp.Models
     }
     public class TechSpec
     {
-        public string Name { get; set; } 
+     
+        public int TechSpecId { get; set; }
+    
+        public string Name { get; set; }
 
-        public string Value { get; set; } 
-        public string Unit { get; set; } 
+
+        public string Value { get; set; }
+
+        public string Unit { get; set; }
+
+        public int ProductId { get; set; }
+
     }
 
 

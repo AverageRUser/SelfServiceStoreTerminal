@@ -1,3 +1,5 @@
+using TradeCompApp.ViewModels;
+
 namespace TradeCompApp;
 
 public partial class CompletionPage : ContentPage
@@ -5,7 +7,8 @@ public partial class CompletionPage : ContentPage
 	public CompletionPage()
 	{
 		InitializeComponent();
-	}
+        BindingContext = CartViewModel.Instance;
+    }
 
     private void OnPrintReceiptClicked(object sender, EventArgs e)
     {

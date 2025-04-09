@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.CompletionPage"
+             xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
              Title="CompletionPage">
     <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Спасибо за покупку!" FontSize="Large" HorizontalOptions="Center" />
-        <Button Text="Распечатать чек" Clicked="OnPrintReceiptClicked" />
+        <Button Text="Распечатать чек" Clicked="OnPrintReceiptClicked" Command="{Binding OnPrintReceiptCommand}" />
         <Button Text="Отправить чек по email" Clicked="OnEmailReceiptClicked" />
-      
+        <Label Text="{Binding ReceiptText}" LineBreakMode="WordWrap"/>
     </VerticalStackLayout>
 </ContentPage>

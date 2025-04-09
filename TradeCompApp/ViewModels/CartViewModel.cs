@@ -1,16 +1,17 @@
-﻿
-
-using System;
-using System.Collections.Generic;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Linq;
+using TradeCompApp.Database;
 using TradeCompApp.Models;
+
+
+
 
 namespace TradeCompApp.ViewModels
 {
@@ -18,15 +19,24 @@ namespace TradeCompApp.ViewModels
     {
         
         private static CartViewModel _instance;
-        private Dictionary<string, ObservableCollection<ProductService>> _categoryServices;
+        private Dictionary<int, ObservableCollection<ProductService>> _categoryServices;
+        
        
         private bool _isEnabled;
-        
+        private string _selectedDelivery;
+        private string _selectedPayment;
+        private string _receiptText;
+    
+
         public static CartViewModel Instance => _instance ??= new CartViewModel();
         public ICommand RemoveCommand { get; set; }
         public ICommand AddQuantityCommand { get; set; }
         public ICommand DistQuantityCommand { get; set; }
         public ICommand ServiceCheckedCommand => new Command<ProductService>(OnServiceCheckedChanged);
+        public ICommand OnPrintReceiptCommand => new Command(OnPrintReceipt);
+
+
+        private readonly DatabaseService _databaseService;
         public ObservableCollection<CartItem> CartProduction { get; } = new();
        
         public decimal TotalPrice => CartProduction.Sum(item => item.TotalPrice);
@@ -42,12 +52,37 @@ namespace TradeCompApp.ViewModels
                 }
             }
         }
-    
-
+        public string SelectedDelivery
+        {
+            get => _selectedDelivery;
+            set
+            {
+                _selectedDelivery = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SelectedPayment
+        {
+            get => _selectedPayment;
+            set
+            {
+                _selectedPayment = value;
+                OnPropertyChanged();
+            }
+        }
+        public string ReceiptText
+        {
+            get => _receiptText;
+            set
+            {
+                _receiptText = value;
+                OnPropertyChanged();
+            }
+        }
         public CartViewModel()
         {
-
-            InitializeSevices();
+            _databaseService = new DatabaseService();
+            //InitializeSevices();
           
             RemoveCommand = new Command<CartItem>((CartItem item) =>
             {
@@ -78,7 +113,7 @@ namespace TradeCompApp.ViewModels
                 }
                 OnPropertyChanged(nameof(TotalPrice));
             });
-
+           
         }
         private void OnServiceCheckedChanged(ProductService service)
         {
@@ -88,34 +123,108 @@ namespace TradeCompApp.ViewModels
 
             OnPropertyChanged(nameof(TotalPrice));
         }
-        private void InitializeSevices()
+        public async Task InitializeSevices()
         {
-            _categoryServices = new Dictionary<string, ObservableCollection<ProductService>>
+            try
             {
-                ["TV"] = new ObservableCollection<ProductService>
+                _categoryServices = new Dictionary<int, ObservableCollection<ProductService>>();
+                var categories = await _databaseService.GetAllCategories();
+
+                foreach (var category in categories)
                 {
-                    new ProductService { Name = "Установка телевизора", Price = 1500, Category = "TV" },
-                    new ProductService { Name = "Настройка телевизора", Price = 800, Category = "TV" }
-                },
-                ["Laptops"] = new ObservableCollection<ProductService>
-                {
-                    new ProductService { Name = "Установка ОС", Price = 2000, Category = "Laptops" },
-                    new ProductService { Name = "Настройка программ", Price = 1000, Category = "Laptops" }
-                },
-                ["Smartphones"] = new ObservableCollection<ProductService>
-                {
-                    new ProductService { Name = "Перенос данных", Price = 500, Category = "Smartphones" },
-                    new ProductService { Name = "Установка защитного стекла", Price = 300, Category = "Smartphones" }
-                },
-                ["Appliances"] = new ObservableCollection<ProductService>
-                {
-                    new ProductService { Name = "Установка техники", Price = 1000, Category = "Appliances" },
-                    new ProductService { Name = "Демонтаж старой техники", Price = 500, Category = "Appliances" }
+                    // Загружаем сервисы для каждой категории
+                    var services = await _databaseService.GetProductServices(category.Id);
+                    _categoryServices[category.Id] = new ObservableCollection<ProductService>(services);
                 }
-            };
+            }
+            catch (Exception ex)
+            {
+                
+                
+                _categoryServices = new Dictionary<int, ObservableCollection<ProductService>>
+                {
+                    [1] = new ObservableCollection<ProductService>
+                    {
+                        new ProductService { Name = "Установка телевизора", Price = 1500, CategoryId = 1 },
+                        new ProductService { Name = "Настройка телевизора", Price = 800, CategoryId = 1 }
+                    },
+                    [4] = new ObservableCollection<ProductService>
+                    {
+                        new ProductService { Name = "Установка ОС", Price = 2000, CategoryId = 4},
+                        new ProductService { Name = "Настройка программ", Price = 1000, CategoryId = 4 }
+                    },
+                    [2] = new ObservableCollection<ProductService>
+                    {
+                        new ProductService { Name = "Перенос данных", Price = 500, CategoryId = 2},
+                        new ProductService { Name = "Установка защитного стекла", Price = 300, CategoryId = 2}
+                    },
+                    [3] = new ObservableCollection<ProductService>
+                    {
+                        new ProductService { Name = "Установка техники", Price = 1000, CategoryId = 3 },
+                        new ProductService { Name = "Демонтаж старой техники", Price = 500, CategoryId = 3 }
+                    }
+                };
+                
+            }
         }
-            
-            
+        public async void OnPrintReceipt()
+        {
+           
+            var builder = new StringBuilder();
+            builder.AppendLine($"Чек №");
+            builder.AppendLine($"ООО Успех");
+            builder.AppendLine($"------------");
+            builder.AppendLine($"Товары:");
+            foreach (var item in CartProduction)
+            {
+                builder.AppendLine($"{item.Product.Name} - {item.Product.Price:C} - {item.Quantity} ");
+            }
+            builder.AppendLine($"Услуги:");
+            foreach (var item in CartProduction)
+            {
+                foreach (var service in item.Services)
+                {
+                    if(service.IsSelectedService == true)
+                    builder.AppendLine($"{service.Name} - {service.Price:C} ");
+                }
+                
+            }
+            builder.AppendLine($"------------");
+            builder.AppendLine($"Итого: {TotalPrice:C}");
+            builder.AppendLine($"Способ оплаты: {SelectedPayment}");
+            builder.AppendLine($"Способ доставки: {SelectedDelivery}");
+            ReceiptText = builder.ToString();
+            await SendReceiptByEmail("amprograms22@gmail.com", "Чек №", builder.ToString());
+        }
+     
+        public async Task SendReceiptByEmail( string customerEmail, string subject,string body)
+        {
+            /*
+            var email = new MimeMessage();
+            email.From.Add(new MailboxAddress("Sender Name", "sender@example.com"));
+            email.To.Add(new MailboxAddress("Recipient", customerEmail));
+            email.Subject = subject;
+
+            email.Body = new TextPart("plain") { Text = body };
+
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync("your-email@gmail.com", "your-password");
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
+            */
+
+            /*
+             var message = new EmailMessage
+             {
+                 Subject = $"Чек №",
+                 Body = "Test",
+                 To = new List<string> { customerEmail }
+             };
+
+             await Email.Default.ComposeAsync(message);
+            */
+        }
         public void AddToCart(CartItem item)
         {
             
@@ -124,12 +233,15 @@ namespace TradeCompApp.ViewModels
             if (existingItem != null)
                 existingItem.Quantity += item.Quantity;
             else
-                 if (_categoryServices.TryGetValue(item.Product.Type, out var services))
+            
+            if (_categoryServices.TryGetValue(item.Product.CategoryId, out var services))
             {
                 item.Services = new ObservableCollection<ProductService>(services);
+                
             }
+
             CartProduction.Add(item);
-          
+
 
             OnPropertyChanged(nameof(TotalPrice));
         }

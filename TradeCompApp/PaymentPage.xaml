@@ -6,10 +6,17 @@
     <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Сумма к оплате:" FontSize="Large" />
         <Label x:Name="TotalAmountLabel" FontSize="Medium"  Text="{Binding TotalPrice, StringFormat='{0:C}'}" />
-        <Picker x:Name="PaymentMethodPicker" Title="Выберите способ оплаты">
+        <Picker x:Name="PaymentMethodPicker" Title="Выберите способ оплаты" SelectedItem="{Binding SelectedPayment,Mode=TwoWay}" >
             <Picker.Items>
                 <x:String>Карта</x:String>
                 <x:String>СБП</x:String>
+            </Picker.Items>
+        </Picker>
+        <Label  FontSize="Medium"  Text="{Binding SelectedDelivery, StringFormat='Selected: {0}'}" />
+        <Picker Title="Выберите способ доставки" SelectedItem="{Binding SelectedDelivery, Mode=TwoWay}" >
+            <Picker.Items>
+                <x:String>Самовывоз</x:String>
+                <x:String>Курьером</x:String>
             </Picker.Items>
         </Picker>
         <Button Text="Оплатить" Clicked="OnPayClicked" />

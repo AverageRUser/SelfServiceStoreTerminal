@@ -6,10 +6,12 @@
         public MainPage()
         {
             InitializeComponent();
+
         }
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
+         
 #if WINDOWS || MACCATALYST
             var window = GetParentWindow();
             if (window != null)
@@ -25,7 +27,8 @@
     
 
         private async void OnHelpClicked(object sender, EventArgs e)
-        {
+        {       
+            //await SecureStorage.SetAsync("mysql_connection", connectionstring);
             await Navigation.PushAsync(new HelpPage());
         }
     }
