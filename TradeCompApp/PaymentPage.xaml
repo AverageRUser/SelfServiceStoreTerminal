@@ -8,18 +8,42 @@
         <Label x:Name="TotalAmountLabel" FontSize="Medium"  Text="{Binding TotalPrice, StringFormat='{0:C}'}" />
         <Picker x:Name="PaymentMethodPicker" Title="Выберите способ оплаты" SelectedItem="{Binding SelectedPayment,Mode=TwoWay}" >
             <Picker.Items>
+                
                 <x:String>Карта</x:String>
                 <x:String>СБП</x:String>
             </Picker.Items>
+           
         </Picker>
-        <Label  FontSize="Medium"  Text="{Binding SelectedDelivery, StringFormat='Selected: {0}'}" />
-        <Picker Title="Выберите способ доставки" SelectedItem="{Binding SelectedDelivery, Mode=TwoWay}" >
+        <Entry  Placeholder="Введите номер карты: " IsVisible="False" >
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference PaymentMethodPicker}, Path=SelectedIndex}" Value="0">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+        
+        <!--<Label  FontSize="Medium"  Text="{Binding SelectedDelivery, StringFormat='Selected: {0}'}" /> -->
+        <Picker x:Name="DeliveryPicker" Title="Выберите способ доставки" SelectedItem="{Binding SelectedDelivery, Mode=TwoWay}" >
             <Picker.Items>
                 <x:String>Самовывоз</x:String>
                 <x:String>Курьером</x:String>
             </Picker.Items>
         </Picker>
-        <Button Text="Оплатить" Clicked="OnPayClicked" />
+        <Button Text="Оплатить" Clicked="OnPayClicked"  >
+            <Button.Triggers>
+                <MultiTrigger TargetType="Button">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding Source={x:Reference PaymentMethodPicker}, Path=SelectedIndex}"
+                                  Value="-1" />
+                        <BindingCondition Binding="{Binding Source={x:Reference DeliveryPicker}, Path=SelectedIndex}"
+                                  Value="-1" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="False" />
+                    <Setter Property="BackgroundColor" Value="LightGray" />
+                    <Setter Property="TextColor" Value="Gray" />
+                </MultiTrigger>
+            </Button.Triggers>
+        </Button>
         <Button Text="Отмена" Clicked="OnCancelClicked" />
     </VerticalStackLayout>
 </ContentPage>

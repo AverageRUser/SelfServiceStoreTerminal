@@ -122,7 +122,7 @@ namespace TradeCompApp.ViewModels
             _databaseService = new DatabaseService();
 
             LoadProducts();
-            //FilteredProducts = new ObservableCollection<Product>(AllProducts);
+       
             MessagingCenter.Subscribe<CategoryViewModel, int>(this, "CategorySelected", (sender, categoryId) =>
             {
                 SelectedCategory = categoryId;

@@ -171,8 +171,9 @@ namespace TradeCompApp.ViewModels
         {
            
             var builder = new StringBuilder();
-            builder.AppendLine($"Чек №");
+          
             builder.AppendLine($"ООО Успех");
+            builder.AppendLine($"Добро пожаловать!");
             builder.AppendLine($"------------");
             builder.AppendLine($"Товары:");
             foreach (var item in CartProduction)
