@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using Google.Apis.Util;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Windows.Input;
 using TradeCompApp.Database;
 using TradeCompApp.Models;
+
 
 
 
@@ -26,7 +28,7 @@ namespace TradeCompApp.ViewModels
         private string _selectedDelivery;
         private string _selectedPayment;
         private string _receiptText;
-    
+        private string _emailtext;
 
         public static CartViewModel Instance => _instance ??= new CartViewModel();
         public ICommand RemoveCommand { get; set; }
@@ -34,12 +36,25 @@ namespace TradeCompApp.ViewModels
         public ICommand DistQuantityCommand { get; set; }
         public ICommand ServiceCheckedCommand => new Command<ProductService>(OnServiceCheckedChanged);
         public ICommand OnPrintReceiptCommand => new Command(OnPrintReceipt);
+        public ICommand OnBackToMainPageCommand => new Command(OnBackToMainPage);
 
+       
+        public ICommand OnPrintEmailReceiptCommand => new Command(OnEmailPrintReceipt);
 
         private readonly DatabaseService _databaseService;
+        private readonly GoogleAuthService _AuthService;
         public ObservableCollection<CartItem> CartProduction { get; } = new();
        
         public decimal TotalPrice => CartProduction.Sum(item => item.TotalPrice);
+        public string EmailText
+        {
+            get => _emailtext;
+            set
+            {
+                _emailtext = value;
+                OnPropertyChanged(nameof(EmailText));
+            }
+        }
         public bool ButtonIsEnabled
         {
             get => _isEnabled;
@@ -82,6 +97,7 @@ namespace TradeCompApp.ViewModels
         public CartViewModel()
         {
             _databaseService = new DatabaseService();
+            _AuthService = new GoogleAuthService();
             //InitializeSevices();
           
             RemoveCommand = new Command<CartItem>((CartItem item) =>
@@ -140,7 +156,7 @@ namespace TradeCompApp.ViewModels
             catch (Exception ex)
             {
                 
-                
+                //Загрузка данныпо умолчанию, если не удалось подключиться к СУБД
                 _categoryServices = new Dictionary<int, ObservableCollection<ProductService>>
                 {
                     [1] = new ObservableCollection<ProductService>
@@ -167,64 +183,109 @@ namespace TradeCompApp.ViewModels
                 
             }
         }
+        private async void OnBackToMainPage()
+        {
+            CartProduction.Clear();
+            if (Shell.Current != null)
+            {
+                await Shell.Current.Navigation.PopToRootAsync();
+            }
+        }
+
         public async void OnPrintReceipt()
         {
+            Receipt receipt = await _databaseService.GetReceipt();
+        
+            //Для отладки
+            ReceiptText = ReceiptBuilder(receipt).ToString();
            
-            var builder = new StringBuilder();
-          
-            builder.AppendLine($"ООО Успех");
-            builder.AppendLine($"Добро пожаловать!");
-            builder.AppendLine($"------------");
-            builder.AppendLine($"Товары:");
+            Shell.Current.DisplayAlert("Электронный чек", "Успешно отправленно!", "Вернуться на главную");
+            if (Shell.Current != null)
+            {
+                await Shell.Current.Navigation.PopToRootAsync();
+            }
+
+        }
+        public StringBuilder ReceiptBuilder(Receipt receipt)
+        {
+            var receiptBuilder = new StringBuilder();
+
+            receiptBuilder.AppendLine($"ООО Успех");
+            receiptBuilder.AppendLine($"Добро пожаловать!");
+            receiptBuilder.AppendLine($"ИНН {receipt.INN}");
+            receiptBuilder.AppendLine($"ККМ {receipt.KKM}");
+            receiptBuilder.AppendLine($"ЭКЛЗ {receipt.EKLZ}");
+            receiptBuilder.AppendLine($"Адрес - {receipt.Address}");
+            receiptBuilder.AppendLine($"{receipt.CreatedAt}");
+            receiptBuilder.AppendLine($"{receipt.Position}");
+            receiptBuilder.AppendLine($"{receipt.FIO}");
+            receiptBuilder.AppendLine($"Товары:");
             foreach (var item in CartProduction)
             {
-                builder.AppendLine($"{item.Product.Name} - {item.Product.Price:C} - {item.Quantity} ");
+                receiptBuilder.AppendLine($"{item.Product.Name} \n {item.Quantity} \t = {item.Product.Price:C} ");
             }
-            builder.AppendLine($"Услуги:");
+            receiptBuilder.AppendLine($"Услуги:");
             foreach (var item in CartProduction)
             {
                 foreach (var service in item.Services)
                 {
-                    if(service.IsSelectedService == true)
-                    builder.AppendLine($"{service.Name} - {service.Price:C} ");
+                    if (service.IsSelectedService == true)
+                        receiptBuilder.AppendLine($"{service.Name} \n\t  = {service.Price:C} ");
                 }
-                
+
             }
-            builder.AppendLine($"------------");
-            builder.AppendLine($"Итого: {TotalPrice:C}");
-            builder.AppendLine($"Способ оплаты: {SelectedPayment}");
-            builder.AppendLine($"Способ доставки: {SelectedDelivery}");
-            ReceiptText = builder.ToString();
-            await SendReceiptByEmail("amprograms22@gmail.com", "Чек №", builder.ToString());
+            receiptBuilder.AppendLine($"---------------------------");
+            receiptBuilder.AppendLine($"Итого: {TotalPrice:C}");
+            receiptBuilder.AppendLine($"Способ оплаты: {SelectedPayment}");
+            receiptBuilder.AppendLine($"Способ доставки: {SelectedDelivery}");
+            receiptBuilder.AppendLine($"---------------------------");
+            receiptBuilder.AppendLine($"Чек №{receipt.Id}");
+            return receiptBuilder;
         }
-     
+        public async void OnEmailPrintReceipt()
+        {
+            Receipt receipt = await _databaseService.GetReceipt();
+
+       
+            await SendReceiptByEmail(EmailText, "Электронный Чек", ReceiptBuilder(receipt).ToString());
+        }
+      
+
         public async Task SendReceiptByEmail( string customerEmail, string subject,string body)
         {
-            /*
-            var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("Sender Name", "sender@example.com"));
-            email.To.Add(new MailboxAddress("Recipient", customerEmail));
-            email.Subject = subject;
+            try
+            {
+                var oauthToken = await _AuthService.GetOAuthTokenAsync();
+                //string password = await SecureStorage.GetAsync("accountsmpt");
+              
+                var email = new MimeMessage();
+              
+                email.From.Add(new MailboxAddress("ООО Успех", "uspehru231@gmail.com"));
+                email.To.Add(new MailboxAddress("Recipient", customerEmail));
+                email.Subject = subject;
 
-            email.Body = new TextPart("plain") { Text = body };
+                email.Body = new TextPart("plain") { Text = body };
 
-            using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync("your-email@gmail.com", "your-password");
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
-            */
-
-            /*
-             var message = new EmailMessage
-             {
-                 Subject = $"Чек №",
-                 Body = "Test",
-                 To = new List<string> { customerEmail }
-             };
-
-             await Email.Default.ComposeAsync(message);
-            */
+                using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                
+                await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                var oauth2 = new SaslMechanismOAuth2("uspehru231@gmail.com", oauthToken);
+                await smtp.AuthenticateAsync(oauth2);
+                await smtp.SendAsync(email);
+                await smtp.DisconnectAsync(true);
+                Shell.Current.DisplayAlert("Электронный чек", "Успешно отправленно!", "Вернуться на главную");
+                if (Shell.Current != null)
+                {
+                    await Shell.Current.Navigation.PopToRootAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Shell.Current.DisplayAlert("Ошибка","Терминал отключен от сети", "Ок");
+            }
+            
+         
+            
         }
         public void AddToCart(CartItem item)
         {

@@ -7,7 +7,9 @@
     <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Спасибо за покупку!" FontSize="Large" HorizontalOptions="Center" />
         <Button Text="Распечатать чек" Clicked="OnPrintReceiptClicked" Command="{Binding OnPrintReceiptCommand}" />
-        <Button Text="Отправить чек по email" Clicked="OnEmailReceiptClicked" />
+        <Entry Placeholder="Введите Email: " Text="{Binding EmailText}"></Entry>
+        <Button Text="Отправить чек по email" Clicked="OnEmailReceiptClicked" Command="{Binding OnPrintEmailReceiptCommand}" />
+        <Button x:Name ="BackToMainPage"  Text="Вернуться на главную" Command="{Binding OnBackToMainPageCommand}" />
         <Label Text="{Binding ReceiptText}" LineBreakMode="WordWrap"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -1,4 +1,6 @@
-﻿namespace TradeCompApp
+﻿using Google.Apis.Auth.OAuth2;
+
+namespace TradeCompApp
 {
     public partial class MainPage : ContentPage
     {
@@ -16,10 +18,11 @@
             var window = GetParentWindow();
             if (window != null)
             {
-                window.Width = 1200; // Ширина окна
-                window.Height = 950; // Высота окна
+                window.Width = 1200; 
+                window.Height = 950;
             }
 #endif
+          
             await Navigation.PushAsync(new CatalogPage());
            
         }
@@ -28,7 +31,7 @@
 
         private async void OnHelpClicked(object sender, EventArgs e)
         {       
-            //await SecureStorage.SetAsync("mysql_connection", connectionstring);
+          
             await Navigation.PushAsync(new HelpPage());
         }
     }

@@ -59,8 +59,7 @@ namespace TradeCompApp.Database
         }
         public async Task<string> GetConnectionString()
         {
-            string connectionString = await SecureStorage.GetAsync("mysql_connection");
-            return connectionString;
+            return await SecureStorage.GetAsync("mysql_connection");
         }
         public async Task<List<Product>> GetAllProducts()
         {
@@ -132,8 +131,7 @@ namespace TradeCompApp.Database
         {
             var specs = new List<TechSpec>();
 
-            var specCommand = new MySqlCommand(
-                "SELECT Id, SpecName, SpecValue, Unit FROM TechSpecs WHERE ProductId = @Id", connection);
+            var specCommand = new MySqlCommand("SELECT Id, SpecName, SpecValue, Unit FROM TechSpecs WHERE ProductId = @Id", connection);
             specCommand.Parameters.AddWithValue("@Id", productId);
 
             using (var reader = specCommand.ExecuteReader())
@@ -160,8 +158,7 @@ namespace TradeCompApp.Database
             var categories = new List<Category>();
 
             using (var connection = new MySqlConnection(await GetConnectionString()))
-            using (var command = new MySqlCommand(
-                "SELECT Id, Name, ImageUrl FROM categories", connection))
+            using (var command = new MySqlCommand("SELECT Id, Name, ImageUrl FROM categories", connection))
             {
                 connection.Open();
 
@@ -182,6 +179,46 @@ namespace TradeCompApp.Database
 
             return categories;
         }
+        public async Task<Receipt> GetReceipt()
+        {
+            var receipt = new Receipt();
         
+         
+            using (var connection = new MySqlConnection(await GetConnectionString()))
+            {
+                using (var commands = new MySqlCommand("INSERT receipt (EmployeeId, MarketId) VALUES (1,1)", connection))
+                {
+                    connection.Open();
+                    commands.ExecuteNonQuery();
+                  
+                }
+                using (var command = new MySqlCommand("select r.Id,r.CreatedAt, m.ИНН as ИНН, ККМ, ЭКЛЗ, Адрес, ФИО, Должность from receipt as r " +
+                    "left join market as m on r.MarketId = m.Id " +
+                    "left join employee as e on r.EmployeeId = e.Id " +
+                    "ORDER BY r.CreatedAt DESC LIMIT 1;", connection))
+                {
+                    //connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            receipt = new Receipt
+                            {
+                                Id = reader.GetInt32("Id"),
+                                CreatedAt = reader.GetDateTime("CreatedAt"),
+                                Address = reader.GetString("Адрес"),
+                                EKLZ = reader.GetString("ЭКЛЗ"),
+                                INN = reader.GetString("ИНН"),
+                                KKM = reader.GetString("ККМ"),
+                                FIO = reader.GetString("ФИО"),
+                                Position = reader.GetString("Должность")
+                            };
+                        }
+                    }
+                }
+            }
+            return receipt;
+        }
     }
 }
