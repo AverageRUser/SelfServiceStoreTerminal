@@ -200,10 +200,7 @@ namespace TradeCompApp.ViewModels
             ReceiptText = ReceiptBuilder(receipt).ToString();
            
             Shell.Current.DisplayAlert("Электронный чек", "Успешно отправленно!", "Вернуться на главную");
-            if (Shell.Current != null)
-            {
-                await Shell.Current.Navigation.PopToRootAsync();
-            }
+            OnBackToMainPage();
 
         }
         public StringBuilder ReceiptBuilder(Receipt receipt)
@@ -274,10 +271,7 @@ namespace TradeCompApp.ViewModels
                 await smtp.SendAsync(email);
                 await smtp.DisconnectAsync(true);
                 Shell.Current.DisplayAlert("Электронный чек", "Успешно отправленно!", "Вернуться на главную");
-                if (Shell.Current != null)
-                {
-                    await Shell.Current.Navigation.PopToRootAsync();
-                }
+                OnBackToMainPage();
             }
             catch (Exception ex)
             {
