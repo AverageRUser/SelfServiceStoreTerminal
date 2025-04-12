@@ -3,13 +3,92 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.CompletionPage"
              xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
-             Title="CompletionPage">
-    <VerticalStackLayout Spacing="20" Padding="20">
-        <Label Text="Спасибо за покупку!" FontSize="Large" HorizontalOptions="Center" />
-        <Button Text="Распечатать чек" Clicked="OnPrintReceiptClicked" Command="{Binding OnPrintReceiptCommand}" />
-        <Entry Placeholder="Введите Email: " Text="{Binding EmailText}"></Entry>
-        <Button Text="Отправить чек по email" Clicked="OnEmailReceiptClicked" Command="{Binding OnPrintEmailReceiptCommand}" />
-        <Button x:Name ="BackToMainPage"  Text="Вернуться на главную" Command="{Binding OnBackToMainPageCommand}" />
-        <Label Text="{Binding ReceiptText}" LineBreakMode="WordWrap"/>
-    </VerticalStackLayout>
+              Title="Завершение покупки"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto"
+              Padding="20"
+              RowSpacing="15"
+              VerticalOptions="Center">
+
+            <!-- Заголовок -->
+            <Frame Grid.Row="0"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="20"
+                   HasShadow="True"
+                   HorizontalOptions="Center">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Image Source="success_icon.png"
+                           HeightRequest="80"
+                           WidthRequest="80"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="Спасибо за покупку!" 
+                           FontSize="24"
+                           TextColor="{StaticResource PrimaryButton}"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="Ваш заказ успешно оформлен"
+                           FontSize="16"
+                           TextColor="{StaticResource SecondaryText}"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+
+
+            <!-- Опции чека -->
+            <Frame Grid.Row="2"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    <Button Text="Распечатать чек" 
+                            Clicked="OnPrintReceiptClicked"
+                            Command="{Binding OnPrintReceiptCommand}"
+                            BackgroundColor="{StaticResource SecondaryButton}"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50" IsEnabled="False">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xf02f;"
+                                            FontFamily="FontAwesome"
+                                            Color="White"
+                                            Size="16"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                    <Entry Placeholder="Введите Email" 
+                           Text="{Binding EmailText}"
+                           Keyboard="Email"
+                           ClearButtonVisibility="WhileEditing">
+                        <!--
+                        <Entry.Behaviors>
+                            <behavior:EmailValidationBehavior />
+                        </Entry.Behaviors>
+                        -->
+                    </Entry>
+
+                    <Button Text="Отправить чек на email"
+                            Clicked="OnEmailReceiptClicked"
+                            Command="{Binding OnPrintEmailReceiptCommand}"
+                            BackgroundColor="{StaticResource PrimaryButton}"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            IsEnabled="{Binding IsEmailValid}">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xf0e0;"
+                                            FontFamily="FontAwesome"
+                                            Color="White"
+                                            Size="16"/>
+                        </Button.ImageSource>
+                    </Button>
+                </VerticalStackLayout>
+            </Frame>
+
+        </Grid>
+    </ScrollView>
 </ContentPage>

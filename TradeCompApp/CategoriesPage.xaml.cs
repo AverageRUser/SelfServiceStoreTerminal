@@ -21,4 +21,8 @@ public partial class CategoriesPage : ContentPage
     {
         Navigation.PopAsync();
     }
+    private void OnBackClicked(object sender, EventArgs e)
+    {
+        Navigation.PopAsync();
     }
+}

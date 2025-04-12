@@ -1,18 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TradeCompApp.MainPage" Title="uspeh.ru" >
+             x:Class="TradeCompApp.MainPage" Title="uspeh.ru"   BackgroundColor="{StaticResource PageBackground}">
 
     <ScrollView>
-      
-        <VerticalStackLayout Padding="30,0" Spacing="25" VerticalOptions="Center" HorizontalOptions="Center">
+        <VerticalStackLayout Padding="30,50" Spacing="40" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Center">
 
-            <Label   Text="Добро пожаловать!" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level1" />
+            <!-- Заголовок с логотипом -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Image Source="dotnet_bot.png" WidthRequest="50" HeightRequest="50"/>
+                <Label Text="Добро пожаловать!" 
+                       Style="{StaticResource Headline}" 
+                       TextColor="{StaticResource PrimaryText}"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       SemanticProperties.HeadingLevel="Level1" />
+            </HorizontalStackLayout>
 
-            <Button Text="Выбрать товар в каталоге"  Clicked="OnCounterClicked"   WidthRequest="400" HeightRequest="80" FontSize="18" CornerRadius="10"  />
-            <Button Text="Помощь сотрудника" Clicked="OnHelpClicked"   WidthRequest="400" HeightRequest="60" FontSize="16" CornerRadius="8"/>
-         
-           
+            <!-- Основные кнопки действий -->
+            <VerticalStackLayout Spacing="25" WidthRequest="450">
+                <!-- Основная кнопка -->
+                <Button Text="Выбрать товар в каталоге" 
+                       Clicked="OnCounterClicked"   
+                       HeightRequest="90" 
+                       FontSize="20"
+                       CornerRadius="15"
+                       BackgroundColor="{StaticResource PrimaryButton}"
+                       TextColor="White"
+                       FontAttributes="Bold"/>
+
+                <!-- Вторичная кнопка -->
+                <Button Text="Помощь сотрудника" 
+                       Clicked="OnHelpClicked"   
+                       HeightRequest="70" 
+                       FontSize="18"
+                       CornerRadius="12"
+                       BackgroundColor="{StaticResource SecondaryButton}"
+                       TextColor="White"/>
+            </VerticalStackLayout>
+
+            <!-- Информационный текст -->
+            <Label Text="Круглосуточный магазин бытовой техники и электроники" 
+                  FontSize="16"
+                  TextColor="{StaticResource SecondaryText}"
+                  HorizontalOptions="Center"/>
+
         </VerticalStackLayout>
     </ScrollView>
 

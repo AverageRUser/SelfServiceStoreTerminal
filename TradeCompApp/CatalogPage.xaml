@@ -3,102 +3,230 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.CatalogPage"
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
-             Title="Catalog" >
-    <Grid ColumnDefinitions="Auto, *">
-        <Frame x:Name="FiltersPanel" WidthRequest="300" HorizontalOptions="Start" TranslationX="-310" BackgroundColor="#f5f5f5" IsVisible="False" >
-            <VerticalStackLayout Spacing="20">
-                <HorizontalStackLayout >
-                    <Label Text="Фильтры" FontSize="Title" HorizontalOptions="Start"/>
-                    <Button Text="✕" Clicked="FilterPanel_Close"
-    HorizontalOptions="End" Margin="103,0" />
+               Title="Каталог товаров"
+             BackgroundColor="{StaticResource PageBackground}" >
 
+    <Grid ColumnDefinitions="Auto,*" RowSpacing="5">
+        <!-- Панель фильтров (скрытая по умолчанию) -->
+        <Frame x:Name="FiltersPanel" 
+               WidthRequest="300" 
+               BackgroundColor="White"
+               CornerRadius="16"
+               Padding="15"
+               HasShadow="True"
+               TranslationX="-315"
+               IsVisible="False">
+
+            <VerticalStackLayout Spacing="15">
+                <!-- Заголовок панели -->
+                <HorizontalStackLayout HorizontalOptions="Fill">
+                    <Label Text="Фильтры" 
+                           FontSize="24"
+                           TextColor="{StaticResource PrimaryText}"
+                           FontAttributes="Bold"/>
+
+                    <Button Text="✕" 
+                            Clicked="FilterPanel_Close"
+                            TextColor="{StaticResource PrimaryButton}"
+                            BackgroundColor="Transparent"
+                            FontSize="20"
+                            HorizontalOptions="End"/>
                 </HorizontalStackLayout>
-                <Label FontSize="18"
-Text="{Binding SelectedCategory, StringFormat='Выбранная категория: {0}'}" />
-                <Label Text="Характеристики" FontSize="Subtitle"/>
-                <!-- Контент фильтров -->
-                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Filters}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Name}" FontSize="16" />
-                                <Picker 
-                   Title="Выберите значение"
-                   ItemsSource="{Binding AvailableValues}"
-                   SelectedItem="{Binding SelectedValue, Mode=TwoWay}">
 
-                                </Picker>
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
-                <Button Text="Применить фильтр" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, 
-   Path=ApplyFiltersCommand}"/>
+                <!-- Текущая категория -->
+                <Label Text="{Binding SelectedCategory, StringFormat='Категория: {0}'}" 
+                       FontSize="16"
+                       TextColor="{StaticResource SecondaryText}"/>
+
+                <!-- Список фильтров -->
+                <ScrollView>
+                    <VerticalStackLayout Spacing="20" BindableLayout.ItemsSource="{Binding Filters}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="18"
+                                           TextColor="{StaticResource PrimaryText}"
+                                           FontAttributes="Bold"/>
+
+                                    <Picker Title="Выберите значение"
+                                            ItemsSource="{Binding AvailableValues}"
+                                            SelectedItem="{Binding SelectedValue, Mode=TwoWay}"
+                                            TextColor="{StaticResource PrimaryText}"
+                                            TitleColor="{StaticResource SecondaryText}"
+                                            BackgroundColor="White"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!-- Кнопки фильтров -->
+                <Button Text="Применить" 
+                        Command="{Binding ApplyFiltersCommand}"
+                        BackgroundColor="{StaticResource PrimaryButton}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"/>
             </VerticalStackLayout>
-
         </Frame>
-        <VerticalStackLayout Spacing="20" Padding="20" Grid.Column="1">
 
-            <SearchBar x:Name="SearchBar" Text="{Binding SearchText}" Placeholder="Поиск товаров..." SearchCommand="{Binding SearchCommand}" />
-
+        <!-- Основной контент -->
+        <VerticalStackLayout Spacing="15" Padding="15" Grid.Column="1">
+            <!-- Поисковая строка -->
+            <SearchBar Text="{Binding SearchText}" 
+                       Placeholder="Поиск товаров..." 
+                       SearchCommand="{Binding SearchCommand}"
+                       BackgroundColor="White"
+                       CancelButtonColor="{StaticResource PrimaryButton}"
+                       TextColor="{StaticResource PrimaryText}"/>
 
             <!-- Список товаров -->
-            <CollectionView x:Name="ProductList" HeightRequest="700" SelectionMode="Single"   ItemsSource="{Binding FilteredProducts}"  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"  SelectionChangedCommand="{Binding AddToCartCommand}" SelectionChanged="ProductList_SelectionChanged">
-            
+            <CollectionView x:Name="ProductList" 
+                          SelectionMode="None"
+                          ItemsSource="{Binding FilteredProducts}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
+                </CollectionView.ItemsLayout>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0"  >
-                           
-                            <Grid Padding="10" RowSpacing="5" ColumnSpacing="10">
+                        <Frame Padding="0" 
+                               CornerRadius="16"
+                               BackgroundColor="White"
+                               HasShadow="True">
+
+                            <Grid Padding="15" RowSpacing="10" ColumnSpacing="15">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding ImageUrl, FallbackValue='dotnet_bot.png'}" HeightRequest="150" Aspect="AspectFill" Grid.RowSpan="3" />
-                              
-                              
-                                    <HorizontalStackLayout Spacing="10" Grid.Row="0" Grid.Column="1">
 
-                                        <Label Text="{Binding Name}" FontSize="Medium"  />
-                                        <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="Small"  />
-                                    </HorizontalStackLayout>
-                                    <FlexLayout BindableLayout.ItemsSource="{Binding Specs}"  Wrap="NoWrap" Direction="Row" AlignItems="Start" Grid.Column="1" Grid.Row="1" >
+                                <!-- Изображение товара -->
+                                <Image Source="{Binding ImageUrl, FallbackValue='dotnet_bot.png'}" 
+                                       Aspect="AspectFill"
+                                       
+                                       Grid.RowSpan="3"/>
 
-                                        <BindableLayout.ItemTemplate>
-                                            <DataTemplate>
-                                                <HorizontalStackLayout Spacing="5">
-                                                    <Label Text="{Binding Name}" FontSize="Small" />
-                                                    <Label Text="{Binding Value, StringFormat='{0:C}'}" FontSize="Small" />
-                                                <Label Text="{Binding Unit}" FontSize="Small" />
-                                                <Label Text= " "/>
-                                                </HorizontalStackLayout>
-                                            </DataTemplate>
-                                        </BindableLayout.ItemTemplate>
-                                    </FlexLayout>
-                               
-                                
+                                <!-- Название и цена -->
+                                <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="10">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="18"
+                                           TextColor="{StaticResource PrimaryText}"
+                                           FontAttributes="Bold"/>
+
+                                    <Label Text="{Binding Price, StringFormat='{0:C}'}" 
+                                           FontSize="18"
+                                           TextColor="{StaticResource PrimaryButton}"/>
+                                </HorizontalStackLayout>
+
+                                <!-- Характеристики -->
+                                <FlexLayout BindableLayout.ItemsSource="{Binding Specs}" 
+                                            Wrap="Wrap"
+                                            Direction="Row"
+                                            AlignItems="Start"
+                                            Grid.Column="1"
+                                            Grid.Row="1">
+
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame Padding="8,4"
+                                                   CornerRadius="8"
+                                                   BackgroundColor="#F5F5F5"
+                                                   Margin="0,0,5,5">
+                                                <Label 
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource SecondaryText}">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="{}{0}: {1} {2}">
+                                                            <Binding Path="Name"/>
+                                                            <Binding Path="Value"/>
+                                                            <Binding Path="Unit"/>
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+
+                                <!-- Кнопка добавления -->
+                                <Button Text="В корзину"
+                                        Grid.Column="1"
+                                        Grid.Row="2"
+                                        BackgroundColor="{StaticResource PrimaryButton}"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        CornerRadius="10"
+                                        HeightRequest="40"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CatalogViewModel}}, Path=AddToCartCommand}"
+                                        CommandParameter="{Binding .}" Clicked="OnGoToCartClicked"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            
-            <HorizontalStackLayout Spacing="20">
-                <Button Text="Назад" Clicked="OnBackClicked" />
-                <Button Text="Выбрать категорию"  Clicked="OnSelectCategoryClicked" />
-                <Button Text="Фильтры" Clicked="FilterPanel_Open" IsVisible="{Binding VisibilityFilter}"  />
-                <Button Text="Сбросить фильтр" Command="{Binding ResetFilterCommand}" IsVisible="{Binding VisibilityFilter}" Clicked="FilterPanel_Close"/>
-                <Button Text="Корзина" Clicked="OnGoToCartClicked" />
-              
-            </HorizontalStackLayout>
-         
 
-             
+            <!-- Нижняя панель навигации -->
+            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
+                <Button Text="Назад" 
+                        Clicked="OnBackClicked"
+                        BackgroundColor="{StaticResource SecondaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="0"/>
+
+                <Button Text="Категории"  
+                        Clicked="OnSelectCategoryClicked"
+                        BackgroundColor="{StaticResource SecondaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="1"/>
+
+                <Button Text="Фильтры" 
+                        Clicked="FilterPanel_Open" 
+                        BackgroundColor="{StaticResource PrimaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="2"
+                        IsVisible="{Binding VisibilityFilter}"/>
+
+                <Button Text="Сбросить" 
+                        Command="{Binding ResetFilterCommand}" 
+                        BackgroundColor="#E0E0E0"
+                        TextColor="{StaticResource PrimaryText}"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="3"
+                        IsVisible="{Binding VisibilityFilter}"/>
+
+                <Button Text="Корзина" 
+                        Clicked="OnGoToCartClicked"
+                        BackgroundColor="{StaticResource PrimaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="4">
+                    <Button.ImageSource>
+                        
+                        <FontImageSource Glyph="&#xf07a;"
+                      FontFamily="FontAwesome"
+                      Color="White"
+                      Size="16"/>
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

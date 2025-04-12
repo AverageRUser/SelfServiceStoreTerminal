@@ -4,76 +4,184 @@
              x:Class="TradeCompApp.CartPage"
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
               xmlns:behavior="clr-namespace:TradeCompApp.Models.Behaviors"
-             Title="Cart">
-    <VerticalStackLayout Spacing="20" Padding="20">
-      
-        <Label Text="Ваши товары:" FontSize="Large" />
+             Title="Корзина"
+             BackgroundColor="{StaticResource PageBackground}">
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="5">
+        <!-- Шапка -->
+        <Frame Grid.Row="0" 
+               CornerRadius="16"
+               BackgroundColor="White"
+               Padding="15,10"
+               HasShadow="True">
+            <Label Text="Ваши товары" 
+                   FontSize="24"
+                   TextColor="{StaticResource PrimaryText}"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+        </Frame>
 
-        <CollectionView x:Name="CartItemsList" ItemsSource="{Binding CartProduction}" HeightRequest="700" >
+        <CollectionView x:Name="CartItemsList" 
+                          ItemsSource="{Binding CartProduction}"
+                          SelectionMode="None" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                               
-                                <RowDefinition Height="*" />
-                               
-                            </Grid.RowDefinitions>
-                            <HorizontalStackLayout Background="Aqua" Grid.Row="0">
-                            <Label Text="{Binding Product.Name}" FontSize="Medium" />
-                            <Label Text="{Binding Product.Price, StringFormat='{0:C}'}" FontSize="Small" />
-                            <!--Кастомный Stepper-->
-                            <Frame  CornerRadius="5"  BorderColor="#E0E0E0" BackgroundColor="White" HasShadow="True"  Padding="0">
-                                
-                                <HorizontalStackLayout  Spacing="0">
-                                    <Button Text="-" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=DistQuantityCommand}"
-CommandParameter="{Binding .}"    BackgroundColor="Transparent" TextColor="Black" FontSize="Medium" WidthRequest="40" IsEnabled="{Binding ButtonIsEnabled}"/>
-                                    
-                                    <BoxView   WidthRequest="1"  Color="#E0E0E0"  VerticalOptions="FillAndExpand" />
-                                    <Label Text="{Binding Quantity}" FontSize="Medium"  VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="40" />
-                                    <BoxView   WidthRequest="1"  Color="#E0E0E0"  VerticalOptions="FillAndExpand" />
-                                    
-                                    <Button Text="+" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=AddQuantityCommand}" 
-            CommandParameter="{Binding .}"  BackgroundColor="Transparent"  TextColor="Black" FontSize="Medium" WidthRequest="40" />
-                                </HorizontalStackLayout>
-                            </Frame>
-                            
-                            <Button Text="Удалить"
-           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveCommand}"
-           CommandParameter="{Binding .}" HorizontalOptions="End" />
-                            
-                        </HorizontalStackLayout>
-                            <FlexLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding Services}"  BackgroundColor="#A9BE6B" Wrap="NoWrap" Direction="Row" AlignItems="Start" >
+                    
+                    <DataTemplate>
+                        <Frame Padding="0" 
+                               Margin="0,0,0,15"
+                               CornerRadius="16"
+                               BackgroundColor="White"
+                               HasShadow="True" >
 
-                                <BindableLayout.ItemTemplate>
+                            <Grid Padding="15" RowSpacing="10" ColumnSpacing="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <DataTemplate>
+      
+                                <Image Source="{Binding Product.ImageUrl}"   Aspect="AspectFill"   Grid.RowSpan="3"/>
 
-                                        <HorizontalStackLayout Padding="10" >
+ 
+                                <VerticalStackLayout Grid.Column="1" Grid.Row="0">
+                                    <Label Text="{Binding Product.Name}" 
+                                           FontSize="18"
+                                           TextColor="{StaticResource PrimaryText}"
+                                           FontAttributes="Bold"/>
 
-                                            <CheckBox IsChecked="{Binding IsSelectedService,Mode=TwoWay}" VerticalOptions="Center" >
-                                                
-                                            </CheckBox>
-                                            <Label Text="{Binding Name}" FontSize="16" VerticalOptions="Center"/>
-                                            <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green" VerticalOptions="Center" />
-                                        </HorizontalStackLayout>
+                                    <Label Text="{Binding Product.Price, StringFormat='{0:C}'}" 
+                                           FontSize="16"
+                                           TextColor="{StaticResource PrimaryButton}"/>
+                                </VerticalStackLayout>
 
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </FlexLayout>
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <HorizontalStackLayout Spacing="20">
-            
+                                <!-- Stepper -->
+                                <Frame Grid.Column="1" Grid.Row="1"
+                                       CornerRadius="12"
+                                       BorderColor="#E0E0E0"
+                                       BackgroundColor="White"
+                                       Padding="0"
+                                       HorizontalOptions="Start">
+                                    <HorizontalStackLayout Spacing="0">
+                                        <Button Text="-" 
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=DistQuantityCommand}"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="Transparent" 
+                                               TextColor="Black" 
+                                               FontSize="Medium" 
+                                               WidthRequest="45"
+                                               HeightRequest="45"
+                                               IsEnabled="{Binding ButtonIsEnabled}"/>
 
-            <Button Text="Выход" Clicked="OnContinueShoppingClicked" VerticalOptions="End" />
-            <Button Text="Каталог товаров и услуг" Clicked="OnAddManualProductClicked" />
-            <Button Text="Перейти к оплате" Clicked="OnProceedToPaymentClicked" />
-            <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}',Mode=TwoWay}" FontSize="Large"/>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+                                        <BoxView WidthRequest="1" Color="#E0E0E0"/>
+                                        <Label Text="{Binding Quantity}" 
+                                               FontSize="18"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="Center" 
+                                               WidthRequest="45"/>
+                                        <BoxView WidthRequest="1" Color="#E0E0E0"/>
+
+                                        <Button Text="+" 
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=AddQuantityCommand}" 
+                                               CommandParameter="{Binding .}"  
+                                               BackgroundColor="Transparent"  
+                                               TextColor="Black" 
+                                               FontSize="Medium" 
+                                               WidthRequest="45"
+                                               HeightRequest="45"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+
+                                <FlexLayout Grid.Column="1" Grid.Row="2"
+                                            BindableLayout.ItemsSource="{Binding Services}"
+                                            Wrap="Wrap"
+                                            Direction="Row"
+                                            AlignItems="Start" >
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame Padding="10,5"
+                                                   CornerRadius="8"
+                                                   BackgroundColor="#F8F8F8" Margin="0,0,10,10">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <CheckBox IsChecked="{Binding IsSelectedService, Mode=TwoWay}" 
+                                                             Color="{StaticResource PrimaryButton}"/>
+                                                    <Label Text="{Binding Name}" 
+                                                           FontSize="14"
+                                                           VerticalOptions="Center"/>
+                                                    <Label Text="{Binding Price, StringFormat='{0:C}'}" 
+                                                           FontSize="14"
+                                                           TextColor="Green" 
+                                                           VerticalOptions="Center"/>
+                                                </HorizontalStackLayout>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+
+                                <Button Grid.Column="1" Grid.Row="1"
+                                        Text="✕"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CartViewModel}}, Path=RemoveCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="#FFEBEE"
+                                        TextColor="#D32F2F"
+                                        FontSize="16"
+                                        WidthRequest="45"
+                                        HeightRequest="45"
+                                        CornerRadius="22"
+                                        HorizontalOptions="End"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+        <!-- Нижняя панель -->
+        <Frame Grid.Row="2"
+               CornerRadius="16"
+               BackgroundColor="White"
+               Padding="15,10"
+               HasShadow="True">
+            <Grid ColumnDefinitions="*,*,*,2*" ColumnSpacing="10">
+                <Button Text="Назад"
+                        Clicked="OnContinueShoppingClicked"
+                        BackgroundColor="{StaticResource SecondaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="0"/>
+
+                <Button Text="Каталог"
+                        Clicked="OnAddManualProductClicked"
+                        BackgroundColor="{StaticResource SecondaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="1"/>
+
+                <Button Text="Оплатить"
+                        Clicked="OnProceedToPaymentClicked"
+                        BackgroundColor="{StaticResource PrimaryButton}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="2"/>
+
+                <Label Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}"
+                       FontSize="20"
+                       TextColor="{StaticResource PrimaryText}"
+                       FontAttributes="Bold"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       Grid.Column="3"/>
+            </Grid>
+        </Frame>
+    </Grid>
 </ContentPage>

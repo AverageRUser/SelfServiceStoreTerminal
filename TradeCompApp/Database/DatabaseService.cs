@@ -23,7 +23,7 @@ namespace TradeCompApp.Database
            {
 
                optionsBuilder.UseMySql(
-                   "server=localhost;database=serviceterminaldb;user=root;password=L3200631sq#;",
+                  ,
                     new MySqlServerVersion(new Version(8, 0, 31))
                );
            }

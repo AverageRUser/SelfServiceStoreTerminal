@@ -68,6 +68,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Resources\Images\phone1.png\**" />
+	  <Compile Remove="Resources\Images\phone1.png\**" />
+	  <EmbeddedResource Remove="Resources\Images\phone1.png\**" />
+	  <MauiCss Remove="Resources\Images\phone1.png\**" />
+	  <MauiImage Remove="Resources\Images\phone1.png\**" />
+	  <MauiXaml Remove="Resources\Images\phone1.png\**" />
+	  <None Remove="Resources\Images\phone1.png\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Google.Apis" Version="1.69.0" />
 		<PackageReference Include="Google.Apis.Auth" Version="1.69.0" />

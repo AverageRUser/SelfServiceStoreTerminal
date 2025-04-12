@@ -24,6 +24,7 @@ public partial class CartPage : ContentPage
 
     private async void OnAddManualProductClicked(object sender, EventArgs e)
     {
+
         await Navigation.PopAsync();
     }
    

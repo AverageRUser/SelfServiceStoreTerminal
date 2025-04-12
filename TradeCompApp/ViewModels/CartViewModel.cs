@@ -103,6 +103,7 @@ namespace TradeCompApp.ViewModels
             RemoveCommand = new Command<CartItem>((CartItem item) =>
             {
                 CartProduction.Remove(item);
+
                 OnPropertyChanged(nameof(TotalPrice));
             });
             AddQuantityCommand = new Command<CartItem>((CartItem item) =>
@@ -198,9 +199,10 @@ namespace TradeCompApp.ViewModels
         
             //Для отладки
             ReceiptText = ReceiptBuilder(receipt).ToString();
-           
-            Shell.Current.DisplayAlert("Электронный чек", "Успешно отправленно!", "Вернуться на главную");
-            OnBackToMainPage();
+
+            Shell.Current.DisplayAlert("Чек", "Успешно отправленно!", "Вернуться на главную");
+                OnBackToMainPage();
+            
 
         }
         public StringBuilder ReceiptBuilder(Receipt receipt)
@@ -285,19 +287,21 @@ namespace TradeCompApp.ViewModels
         {
             
             var existingItem = CartProduction.FirstOrDefault(i => i.Product.Name == item.Product.Name);
-            
+
             if (existingItem != null)
-                existingItem.Quantity += item.Quantity;
-            else
-            
-            if (_categoryServices.TryGetValue(item.Product.CategoryId, out var services))
             {
-                item.Services = new ObservableCollection<ProductService>(services);
-                
+                existingItem.Quantity += item.Quantity;
             }
+            else
+            {
+                if (_categoryServices.TryGetValue(item.Product.CategoryId, out var services))
+                {
+                    item.Services = new ObservableCollection<ProductService>(services);
 
-            CartProduction.Add(item);
+                }
 
+                CartProduction.Add(item);
+            }
 
             OnPropertyChanged(nameof(TotalPrice));
         }

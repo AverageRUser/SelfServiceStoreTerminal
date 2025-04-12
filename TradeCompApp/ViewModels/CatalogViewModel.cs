@@ -24,7 +24,6 @@ namespace TradeCompApp.ViewModels
         private int? _selectedCategory;
       
         private string _searchText;
-        private Product _selectedProduct;
         public ICommand AddToCartCommand => new Command<Product>(AddToCart);
         public ICommand ResetFilterCommand => new Command(OnResetFilter);
         public ICommand SearchCommand => new Command(ExecuteSearch);
@@ -95,18 +94,7 @@ namespace TradeCompApp.ViewModels
                 }
             }
         }
-
-
-        public Product SelectedProduct
-        {
-            get => _selectedProduct;
-            set
-            {
-                _selectedProduct = value;
-                
-                OnPropertyChanged();
-            }
-        }
+    
         public bool VisibilityFilter
         {
             get => _visibilityfilter;
@@ -238,12 +226,16 @@ namespace TradeCompApp.ViewModels
        
         private void AddToCart(Product product)
         {
-        
-            CartViewModel.Instance.AddToCart(new CartItem { Product = SelectedProduct, Quantity = 1 });
+            //if (SelectedProduct == null) return;
+            CartViewModel.Instance.AddToCart(new CartItem { Product = product, Quantity = 1 });
+
+         //   SelectedProduct = null;
+ 
         }
         private void OnResetFilter()
         {
             // Сбрасываем выбранную категорию
+            
             SelectedCategory = null;
             Filters.Clear();
             SearchText = string.Empty;

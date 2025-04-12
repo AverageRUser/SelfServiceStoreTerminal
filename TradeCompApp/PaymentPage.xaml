@@ -2,48 +2,157 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.PaymentPage"
-             Title="Cash">
-    <VerticalStackLayout Spacing="20" Padding="20">
-        <Label Text="Сумма к оплате:" FontSize="Large" />
-        <Label x:Name="TotalAmountLabel" FontSize="Medium"  Text="{Binding TotalPrice, StringFormat='{0:C}'}" />
-        <Picker x:Name="PaymentMethodPicker" Title="Выберите способ оплаты" SelectedItem="{Binding SelectedPayment,Mode=TwoWay}" >
-            <Picker.Items>
-                
-                <x:String>Карта</x:String>
-                <x:String>СБП</x:String>
-            </Picker.Items>
-           
-        </Picker>
-        <Entry  Placeholder="Введите номер карты: " IsVisible="False" >
-            <Entry.Triggers>
-                <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference PaymentMethodPicker}, Path=SelectedIndex}" Value="0">
-                    <Setter Property="IsVisible" Value="True" />
-                </DataTrigger>
-            </Entry.Triggers>
-        </Entry>
-        
-        <!--<Label  FontSize="Medium"  Text="{Binding SelectedDelivery, StringFormat='Selected: {0}'}" /> -->
-        <Picker x:Name="DeliveryPicker" Title="Выберите способ доставки" SelectedItem="{Binding SelectedDelivery, Mode=TwoWay}" >
-            <Picker.Items>
-                <x:String>Самовывоз</x:String>
-                <x:String>Курьером</x:String>
-            </Picker.Items>
-        </Picker>
-        <Button Text="Оплатить" Clicked="OnPayClicked"  >
-            <Button.Triggers>
-                <MultiTrigger TargetType="Button">
-                    <MultiTrigger.Conditions>
-                        <BindingCondition Binding="{Binding Source={x:Reference PaymentMethodPicker}, Path=SelectedIndex}"
-                                  Value="-1" />
-                        <BindingCondition Binding="{Binding Source={x:Reference DeliveryPicker}, Path=SelectedIndex}"
-                                  Value="-1" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="IsEnabled" Value="False" />
-                    <Setter Property="BackgroundColor" Value="LightGray" />
-                    <Setter Property="TextColor" Value="Gray" />
-                </MultiTrigger>
-            </Button.Triggers>
-        </Button>
-        <Button Text="Отмена" Clicked="OnCancelClicked" />
-    </VerticalStackLayout>
+             Title="Оплата"
+             BackgroundColor="{StaticResource PageBackground}">
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" 
+              Padding="20"
+              RowSpacing="15">
+
+            <!-- Заголовок -->
+            <Frame Grid.Row="0"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Сумма к оплате:" 
+                           FontSize="16"
+                           TextColor="{StaticResource SecondaryText}"/>
+                    <Label Text="{Binding TotalPrice, StringFormat='{0:C}'}" 
+                           FontSize="28"
+                           TextColor="{StaticResource PrimaryButton}"
+                           FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Способ оплаты -->
+            <Frame Grid.Row="1"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Способ оплаты" 
+                           FontSize="18"
+                           TextColor="{StaticResource PrimaryText}"
+                           FontAttributes="Bold"/>
+
+                    <Picker Title="Выберите способ..."
+                            SelectedItem="{Binding SelectedPayment, Mode=TwoWay}"
+                            TextColor="{StaticResource PrimaryText}"
+                            TitleColor="{StaticResource SecondaryText}">
+                        <Picker.Items>
+                            <x:String>Карта</x:String>
+                            <x:String>СБП</x:String>
+                        
+                        </Picker.Items>
+                    </Picker>
+
+                    <!-- Поле для карты -->
+                    <Entry Placeholder="Номер карты"  Keyboard="Numeric">
+                          <!-- IsVisible="{Binding SelectedPayment, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Карта'}" -->
+                          
+                        <Entry.Behaviors>
+                           <!-- <behavior:CardNumberMaskBehavior /> -->
+                        </Entry.Behaviors>
+                    </Entry>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Способ получения -->
+            <Frame Grid.Row="2"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Способ получения" 
+                           FontSize="18"
+                           TextColor="{StaticResource PrimaryText}"
+                           FontAttributes="Bold"/>
+
+                    <Picker Title="Выберите способ..."
+                            SelectedItem="{Binding SelectedDelivery, Mode=TwoWay}">
+                        <Picker.Items>
+                            <x:String>Самовывоз</x:String>
+                            <x:String>Курьером</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Дополнительная информация -->
+            <Frame Grid.Row="3"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <!--    IsVisible="{Binding SelectedDelivery, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Курьером'}"> -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Адрес доставки" 
+                           FontSize="18"
+                           TextColor="{StaticResource PrimaryText}"
+                           FontAttributes="Bold"/>
+
+                    <Entry Placeholder="Улица, дом, квартира"
+                           Text="{Binding DeliveryAddress}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Контактные данные -->
+            <Frame Grid.Row="4"
+                   CornerRadius="12"
+                   BackgroundColor="White"
+                   Padding="15"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Контактные данные" 
+                           FontSize="18"
+                           TextColor="{StaticResource PrimaryText}"
+                           FontAttributes="Bold"/>
+
+                    <Entry Placeholder="Ваше имя"
+                           Text="{Binding CustomerName}"/>
+
+                    <Entry Placeholder="Телефон"
+                           Text="{Binding CustomerPhone}"
+                           Keyboard="Telephone"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Кнопки -->
+            <Grid Grid.Row="6"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="15">
+                <Button Text="Отмена"
+                        Clicked="OnCancelClicked"
+                        BackgroundColor="{StaticResource SecondaryButton}"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"/>
+
+                <Button Text="Оплатить"
+                        Clicked="OnPayClicked"
+                        BackgroundColor="{StaticResource PrimaryButton}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Grid.Column="1">
+                    <!--
+                    <Button.IsEnabled>
+                      
+                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                            <Binding Path="SelectedPayment" Converter="{StaticResource IsNotNullConverter}"/>
+                            <Binding Path="SelectedDelivery" Converter="{StaticResource IsNotNullConverter}"/>
+                            <Binding Path="IsDataValid"/>
+                        </MultiBinding>
+                       
+                    </Button.IsEnabled>
+                     -->
+                </Button>
+            </Grid>
+        </Grid>
+    </ScrollView>
 </ContentPage>

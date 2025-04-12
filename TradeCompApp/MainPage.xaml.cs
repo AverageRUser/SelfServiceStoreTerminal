@@ -13,7 +13,7 @@ namespace TradeCompApp
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-         
+         /*
 #if WINDOWS || MACCATALYST
             var window = GetParentWindow();
             if (window != null)
@@ -22,7 +22,7 @@ namespace TradeCompApp
                 window.Height = 950;
             }
 #endif
-          
+          */
             await Navigation.PushAsync(new CatalogPage());
            
         }

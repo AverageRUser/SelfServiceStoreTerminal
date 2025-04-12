@@ -19,6 +19,17 @@
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
+    <Color x:Key="PageBackground">#F8F9FA</Color>
+    <Color x:Key="PrimaryText">#2D3748</Color>
+    <Color x:Key="SecondaryText">#718096</Color>
+    <Color x:Key="PrimaryButton">#8B0000</Color>
+    <!-- Классический бардовый -->
+    <Color x:Key="PrimaryButtonPressed">#6D0000</Color>
+    <!-- Темнее при нажатии -->
+    <Color x:Key="PrimaryButtonText">White</Color>
+
+    <!-- Для SecondaryButton предлагаю гармонирующий оттенок -->
+    <Color x:Key="SecondaryButton">#A9A9A9</Color>
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
     <Color x:Key="Gray300">#ACACAC</Color>

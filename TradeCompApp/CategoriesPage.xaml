@@ -4,29 +4,77 @@
              x:Class="TradeCompApp.CategoriesPage"
              xmlns:local="clr-namespace:TradeCompApp"
              xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
-             Title="CategoriesPage" >
-    <VerticalStackLayout Spacing="20" Padding="20">
-        <Label Text="Выберите категорию:" FontSize="Large" HorizontalOptions="Center" />
+             Title="Категории товаров"
+             BackgroundColor="{StaticResource PageBackground}" >
+    <Grid RowDefinitions="Auto,*,Auto" Padding="15">
+        <Frame Grid.Row="0"     CornerRadius="12" BackgroundColor="White" Padding="15,10" HasShadow="True">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Выберите категорию"   FontSize="24" TextColor="{StaticResource PrimaryText}" FontAttributes="Bold"  HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
 
-        <!-- CarouselView для категорий -->
-        <CollectionView x:Name="Cv" ItemsSource="{Binding Categories}" 
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"  SelectionChangedCommand="{Binding SelectCategoryCommand}" SelectionChanged="ProductCollection_SelectionChanged">
+        <CollectionView Grid.Row="1" x:Name="Cv"   ItemsSource="{Binding Categories}"     SelectionMode="Single"  SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"  SelectionChangedCommand="{Binding SelectCategoryCommand}"  SelectionChanged="ProductCollection_SelectionChanged"   Margin="0,15">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="3" />
+                <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" CornerRadius="10" BackgroundColor="#F0F0F0">
-                        <VerticalStackLayout Spacing="10">
-                            <Image Source="{Binding ImageUrl}" HeightRequest="150" Aspect="AspectFill" />
-                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="Center" />
-                        </VerticalStackLayout>
+                    <Frame Padding="0" 
+                           CornerRadius="16" 
+                           BackgroundColor="White"
+                           HeightRequest="220"
+                           HasShadow="True">
+                        <Grid RowDefinitions="*,Auto">
+                            
+                            <Image Source="{Binding ImageUrl}" 
+                                   Aspect="AspectFill"
+                                   HeightRequest="150"/>
+
+                            <Frame Grid.Row="1"
+                                   CornerRadius="0"
+                                   BackgroundColor="{StaticResource PrimaryButton}"
+                                   Padding="10"
+                                   VerticalOptions="FillAndExpand">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectCategoryCommand}"/>
+                                </Frame.GestureRecognizers>
+                                <Label Text="{Binding Name}" 
+                                       FontSize="18"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+                            </Frame>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="Scale" Value="0.96"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-     
-    </VerticalStackLayout>
+        <!-- Нижняя панель -->
+        <Frame Grid.Row="2"
+               CornerRadius="12"
+               BackgroundColor="White"
+               Padding="15,10"
+               HasShadow="True">
+            <Button Text="Назад"
+                    BackgroundColor="{StaticResource SecondaryButton}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Clicked="OnBackClicked"/>
+        </Frame>
+    </Grid>
 </ContentPage>
