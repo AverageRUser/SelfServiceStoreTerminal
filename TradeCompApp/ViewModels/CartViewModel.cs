@@ -34,7 +34,6 @@ namespace TradeCompApp.ViewModels
         private string _deliveryAddress;
         private string _customerName;
         private string _customerPhone;
-        private bool _isvalidData;
 
         public static CartViewModel Instance => _instance ??= new CartViewModel();
         public ICommand RemoveCommand { get; set; }
@@ -69,18 +68,6 @@ namespace TradeCompApp.ViewModels
                 if (_isEnabled != value)
                 {
                     _isEnabled = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public bool IsDataValid
-        {
-            get => _isvalidData;
-            set
-            {
-                if (_isvalidData != value)
-                {
-                    _isvalidData = value;
                     OnPropertyChanged();
                 }
             }
