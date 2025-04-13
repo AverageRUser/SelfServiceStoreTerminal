@@ -13,50 +13,7 @@ namespace TradeCompApp.Database
 {
     public class DatabaseService : DbContext
     {
-        //Вариант 2 Entity Framework
-        /*
-           public DbSet<Product> Products { get; set; }
-           public DbSet<Category> Categories { get; set; }
-           public DbSet<TechSpec> TechSpecs { get; set; }
-
-           protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-           {
-
-               optionsBuilder.UseMySql(
-                  ,
-                    new MySqlServerVersion(new Version(8, 0, 31))
-               );
-           }
-           protected override void OnModelCreating(ModelBuilder modelBuilder)
-           {
-               // Настройка имен таблиц (если они отличаются от названий классов)
-               modelBuilder.Entity<TechSpec>().ToTable("TechSpecs");
-
-               // Настройка отношений
-               modelBuilder.Entity<Product>()
-                   .HasOne(p => p.Category)
-                   .WithMany(c => c.Products)
-                   .HasForeignKey(p => p.CategoryId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-               modelBuilder.Entity<TechSpec>()
-                   .HasOne(t => t.Product)
-                   .WithMany(p => p.Specs)
-                   .HasForeignKey(t => t.ProductId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
-
-           }
-         */
-        //Вариант 1 MySQLConnector
-
-    
-
-
-        public DatabaseService()
-        {
-          
-        }
+     
         public async Task<string> GetConnectionString()
         {
             return await SecureStorage.GetAsync("mysql_connection");
@@ -82,8 +39,7 @@ namespace TradeCompApp.Database
                             ProductId = reader.GetInt32("Id"),
                             Name = reader.GetString("Name"),
                             Price = reader.GetDecimal("Price"),
-                            ImageUrl = reader.IsDBNull(reader.GetOrdinal("ImageUrl")) ?
-                            null : reader.GetString("ImageUrl"),
+                            ImageUrl = reader.IsDBNull(reader.GetOrdinal("ImageUrl")) ?   null : reader.GetString("ImageUrl"),
                             CategoryId = reader.GetInt32("CategoryId")
                         };
 
@@ -143,8 +99,7 @@ namespace TradeCompApp.Database
                         TechSpecId = reader.GetInt32("Id"),
                         Name = reader.GetString("SpecName"),
                         Value = reader.GetString("SpecValue"),
-                        Unit = reader.IsDBNull(reader.GetOrdinal("Unit")) ?
-                            null : reader.GetString("Unit"),
+                        Unit = reader.IsDBNull(reader.GetOrdinal("Unit")) ?  null : reader.GetString("Unit"),
                         ProductId = productId
                     });
                 }

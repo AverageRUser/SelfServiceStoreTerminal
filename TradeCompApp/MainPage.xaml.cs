@@ -1,4 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace TradeCompApp
 {
@@ -13,16 +16,7 @@ namespace TradeCompApp
 
         private async void OnCounterClicked(object sender, EventArgs e)
         {
-         /*
-#if WINDOWS || MACCATALYST
-            var window = GetParentWindow();
-            if (window != null)
-            {
-                window.Width = 1200; 
-                window.Height = 950;
-            }
-#endif
-          */
+
             await Navigation.PushAsync(new CatalogPage());
            
         }

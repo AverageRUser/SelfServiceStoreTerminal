@@ -19,9 +19,7 @@
                        SemanticProperties.HeadingLevel="Level1" />
             </HorizontalStackLayout>
 
-            <!-- Основные кнопки действий -->
             <VerticalStackLayout Spacing="25" WidthRequest="450">
-                <!-- Основная кнопка -->
                 <Button Text="Выбрать товар в каталоге" 
                        Clicked="OnCounterClicked"   
                        HeightRequest="90" 
@@ -31,7 +29,6 @@
                        TextColor="White"
                        FontAttributes="Bold"/>
 
-                <!-- Вторичная кнопка -->
                 <Button Text="Помощь сотрудника" 
                        Clicked="OnHelpClicked"   
                        HeightRequest="70" 
@@ -40,8 +37,7 @@
                        BackgroundColor="{StaticResource SecondaryButton}"
                        TextColor="White"/>
             </VerticalStackLayout>
-
-            <!-- Информационный текст -->
+            
             <Label Text="Круглосуточный магазин бытовой техники и электроники" 
                   FontSize="16"
                   TextColor="{StaticResource SecondaryText}"

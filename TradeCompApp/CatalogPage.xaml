@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TradeCompApp.CatalogPage"
+             
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
                Title="Каталог товаров"
              BackgroundColor="{StaticResource PageBackground}" >
-
+  
     <Grid ColumnDefinitions="Auto,*" RowSpacing="5">
         <!-- Панель фильтров (скрытая по умолчанию) -->
         <Frame x:Name="FiltersPanel" 
@@ -158,7 +159,6 @@
                                     </BindableLayout.ItemTemplate>
                                 </FlexLayout>
 
-                                <!-- Кнопка добавления -->
                                 <Button Text="В корзину"
                                         Grid.Column="1"
                                         Grid.Row="2"
@@ -175,7 +175,6 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Нижняя панель навигации -->
             <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
                 <Button Text="Назад" 
                         Clicked="OnBackClicked"
@@ -218,13 +217,7 @@
                         CornerRadius="10"
                         HeightRequest="50"
                         Grid.Column="4">
-                    <Button.ImageSource>
-                        
-                        <FontImageSource Glyph="&#xf07a;"
-                      FontFamily="FontAwesome"
-                      Color="White"
-                      Size="16"/>
-                    </Button.ImageSource>
+                  
                 </Button>
             </Grid>
         </VerticalStackLayout>

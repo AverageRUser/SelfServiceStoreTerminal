@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TradeCompApp.PaymentPage"
+             x:Class="TradeCompApp.PaymentPage" 
+             xmlns:behavior ="clr-namespace:TradeCompApp.Behaviors"
+             xmlns:converter ="clr-namespace:TradeCompApp.Behaviors.Converters"
              Title="Оплата"
              BackgroundColor="{StaticResource PageBackground}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:StringToBoolConverter x:Key="StringToBoolConverter"/>
+            <converter:AllTrueConverter x:Key="AllTrueConverter"/>
+            <converter:IsNotNullConverter x:Key="IsNotNullConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" 
               Padding="20"
@@ -50,11 +59,11 @@
                     </Picker>
 
                     <!-- Поле для карты -->
-                    <Entry Placeholder="Номер карты"  Keyboard="Numeric">
-                          <!-- IsVisible="{Binding SelectedPayment, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Карта'}" -->
+                    <Entry Placeholder="Номер карты"  Keyboard="Numeric" Text="{Binding CardData}"
+                         IsVisible="{Binding SelectedPayment, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Карта'}" >
                           
                         <Entry.Behaviors>
-                           <!-- <behavior:CardNumberMaskBehavior /> -->
+                        <behavior:CardNumberMaskBehavior /> 
                         </Entry.Behaviors>
                     </Entry>
                 </VerticalStackLayout>
@@ -87,8 +96,8 @@
                    CornerRadius="12"
                    BackgroundColor="White"
                    Padding="15"
-                   HasShadow="True">
-                <!--    IsVisible="{Binding SelectedDelivery, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Курьером'}"> -->
+                   HasShadow="True"
+               IsVisible="{Binding SelectedDelivery, Converter={StaticResource StringToBoolConverter}, ConverterParameter='Курьером'}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Адрес доставки" 
                            FontSize="18"
@@ -140,17 +149,18 @@
                         CornerRadius="10"
                         HeightRequest="50"
                         Grid.Column="1">
-                    <!--
+                  
                     <Button.IsEnabled>
                       
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="SelectedPayment" Converter="{StaticResource IsNotNullConverter}"/>
                             <Binding Path="SelectedDelivery" Converter="{StaticResource IsNotNullConverter}"/>
-                            <Binding Path="IsDataValid"/>
+                           
+                            
                         </MultiBinding>
                        
                     </Button.IsEnabled>
-                     -->
+                
                 </Button>
             </Grid>
         </Grid>

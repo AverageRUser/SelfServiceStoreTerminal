@@ -29,6 +29,12 @@ namespace TradeCompApp.ViewModels
         private string _selectedPayment;
         private string _receiptText;
         private string _emailtext;
+        private bool _isvalidEmail;
+        private string _cardData;
+        private string _deliveryAddress;
+        private string _customerName;
+        private string _customerPhone;
+        private bool _isvalidData;
 
         public static CartViewModel Instance => _instance ??= new CartViewModel();
         public ICommand RemoveCommand { get; set; }
@@ -65,6 +71,66 @@ namespace TradeCompApp.ViewModels
                     _isEnabled = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+        public bool IsDataValid
+        {
+            get => _isvalidData;
+            set
+            {
+                if (_isvalidData != value)
+                {
+                    _isvalidData = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public bool IsValidEmail
+        {
+            get => _isvalidEmail;
+            set
+            {
+                if (_isvalidEmail != value)
+                {
+                    _isvalidEmail = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public string CardData
+        {
+            get => _cardData;
+            set
+            {
+                _cardData = value;
+                OnPropertyChanged();
+            }
+        }
+        public string DeliveryAddress
+        {
+            get => _deliveryAddress;
+            set
+            {
+                _deliveryAddress = value;
+                OnPropertyChanged();
+            }
+        }
+        public string CustomerName
+        {
+            get => _customerName;
+            set
+            {
+                _customerName = value;
+                OnPropertyChanged();
+            }
+        }
+        public string CustomerPhone
+        {
+            get => _customerPhone;
+            set
+            {
+                _customerPhone = value;
+                OnPropertyChanged();
             }
         }
         public string SelectedDelivery
@@ -236,7 +302,25 @@ namespace TradeCompApp.ViewModels
             receiptBuilder.AppendLine($"---------------------------");
             receiptBuilder.AppendLine($"Итого: {TotalPrice:C}");
             receiptBuilder.AppendLine($"Способ оплаты: {SelectedPayment}");
+
+            if (SelectedPayment == "Карта")
+            {      
+                receiptBuilder.AppendLine($"Номер карты: {CardData}");
+            }
+
             receiptBuilder.AppendLine($"Способ доставки: {SelectedDelivery}");
+            if (SelectedDelivery == "Курьером")
+            {
+                receiptBuilder.AppendLine($"Адрес доставки: {DeliveryAddress}");
+            }
+            if(CustomerName != null)
+            {
+                receiptBuilder.AppendLine($"Имя: {CustomerName}" );
+            }
+            if (CustomerPhone != null)
+            {
+                receiptBuilder.AppendLine($"Телефон: {CustomerPhone}");
+            }
             receiptBuilder.AppendLine($"---------------------------");
             receiptBuilder.AppendLine($"Чек №{receipt.Id}");
             return receiptBuilder;

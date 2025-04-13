@@ -43,7 +43,6 @@
                 
                     <BoxView HeightRequest="1"  BackgroundColor="#E2E8F0"   HorizontalOptions="Fill"/>
 
-                    <!-- Шаг 2 -->
                     <HorizontalStackLayout Spacing="10">
                         <Label Text="2." 
                                FontSize="20"
@@ -82,14 +81,11 @@
                 </VerticalStackLayout>
             </Frame>
 
-      
-            <Button Text="Вызвать сотрудника"  Clicked="OnCallStaffClicked"  HeightRequest="70" FontSize="18" CornerRadius="12"    BackgroundColor="{StaticResource PrimaryButton}" TextColor="White"       HorizontalOptions="Center"  WidthRequest="300">
-                <Button.ImageSource>
-                    <FontImageSource Glyph="&#xf0f0;"  FontFamily="FontAwesome"   Color="White"   Size="20"/>
-                </Button.ImageSource>
-            </Button>
 
-          
+            <Button Text="Вызвать сотрудника"  Clicked="OnCallStaffClicked"  HeightRequest="70" FontSize="18" CornerRadius="12"    BackgroundColor="{StaticResource PrimaryButton}" TextColor="White"       HorizontalOptions="Center"  WidthRequest="300"/>
+
+
+
             <Label Text="Если у вас возникли сложности, нажмите кнопку выше"  FontSize="14"    TextColor="{StaticResource SecondaryText}" HorizontalOptions="Center"/>
 
         </VerticalStackLayout>
