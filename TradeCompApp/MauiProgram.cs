@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm;
-
+using Microsoft.Maui.LifecycleEvents;
+#if WINDOWS
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+#endif
 
 namespace TradeCompApp
 {
@@ -16,9 +20,25 @@ namespace TradeCompApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if WINDOWS
+    events.AddWindows(w => 
+    {
+        w.OnWindowCreated(window =>
+        {
+            window.ExtendsContentIntoTitleBar = false; // Hide title bar
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = AppWindow.GetFromWindowId(myWndId);
+            appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+        });
+    });
+#endif
+            });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
            
 

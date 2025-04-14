@@ -26,9 +26,7 @@
                            HasShadow="True">
                         <Grid RowDefinitions="*,Auto">
                             
-                            <Image Source="{Binding ImageUrl}" 
-                                   Aspect="AspectFill"
-                                   HeightRequest="150"/>
+                            <Image Source="{Binding ImageUrl}"  />
 
                             <Frame Grid.Row="1"
                                    CornerRadius="0"

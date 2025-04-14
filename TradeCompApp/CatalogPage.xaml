@@ -6,8 +6,8 @@
               xmlns:viewmodels="clr-namespace:TradeCompApp.ViewModels"
                Title="Каталог товаров"
              BackgroundColor="{StaticResource PageBackground}" >
-  
-    <Grid ColumnDefinitions="Auto,*" RowSpacing="5">
+
+    <Grid ColumnDefinitions="Auto,*"  RowDefinitions="Auto,*,Auto" RowSpacing="5">
         <!-- Панель фильтров (скрытая по умолчанию) -->
         <Frame x:Name="FiltersPanel" 
                WidthRequest="300" 
@@ -16,7 +16,7 @@
                Padding="15"
                HasShadow="True"
                TranslationX="-315"
-               IsVisible="False">
+               IsVisible="False" Grid.Column="0" Grid.RowSpan="3">
 
             <VerticalStackLayout Spacing="15">
                 <!-- Заголовок панели -->
@@ -74,30 +74,25 @@
         </Frame>
 
         <!-- Основной контент -->
-        <VerticalStackLayout Spacing="15" Padding="15" Grid.Column="1">
+        
             <!-- Поисковая строка -->
             <SearchBar Text="{Binding SearchText}" 
                        Placeholder="Поиск товаров..." 
                        SearchCommand="{Binding SearchCommand}"
                        BackgroundColor="White"
                        CancelButtonColor="{StaticResource PrimaryButton}"
-                       TextColor="{StaticResource PrimaryText}"/>
+                       TextColor="{StaticResource PrimaryText}" Grid.Row="0" Grid.Column="1"/>
 
             <!-- Список товаров -->
-            <CollectionView x:Name="ProductList" 
-                          SelectionMode="None"
-                          ItemsSource="{Binding FilteredProducts}">
+        <CollectionView x:Name="ProductList"   SelectionMode="None"  ItemsSource="{Binding FilteredProducts}" Grid.Row="1" Grid.Column="1" >
 
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="0" 
-                               CornerRadius="16"
-                               BackgroundColor="White"
-                               HasShadow="True">
+                        <Frame Padding="0"    CornerRadius="16" BackgroundColor="White" HasShadow="True">
 
                             <Grid Padding="15" RowSpacing="10" ColumnSpacing="15">
                                 <Grid.RowDefinitions>
@@ -174,9 +169,10 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
-                <Button Text="Назад" 
+        
+            <Frame Grid.Row="2" Grid.Column="1" CornerRadius="16" BackgroundColor="White" Padding="15,10" HasShadow="True">
+                <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
+                    <Button Text="Назад" 
                         Clicked="OnBackClicked"
                         BackgroundColor="{StaticResource SecondaryButton}"
                         TextColor="White"
@@ -184,7 +180,7 @@
                         HeightRequest="50"
                         Grid.Column="0"/>
 
-                <Button Text="Категории"  
+                    <Button Text="Категории"  
                         Clicked="OnSelectCategoryClicked"
                         BackgroundColor="{StaticResource SecondaryButton}"
                         TextColor="White"
@@ -192,7 +188,7 @@
                         HeightRequest="50"
                         Grid.Column="1"/>
 
-                <Button Text="Фильтры" 
+                    <Button Text="Фильтры" 
                         Clicked="FilterPanel_Open" 
                         BackgroundColor="{StaticResource PrimaryButton}"
                         TextColor="White"
@@ -201,7 +197,7 @@
                         Grid.Column="2"
                         IsVisible="{Binding VisibilityFilter}"/>
 
-                <Button Text="Сбросить" 
+                    <Button Text="Сбросить" 
                         Command="{Binding ResetFilterCommand}" 
                         BackgroundColor="#E0E0E0"
                         TextColor="{StaticResource PrimaryText}"
@@ -210,16 +206,17 @@
                         Grid.Column="3"
                         IsVisible="{Binding VisibilityFilter}"/>
 
-                <Button Text="Корзина" 
+                    <Button Text="Корзина" 
                         Clicked="OnGoToCartClicked"
                         BackgroundColor="{StaticResource PrimaryButton}"
                         TextColor="White"
                         CornerRadius="10"
                         HeightRequest="50"
                         Grid.Column="4">
-                  
-                </Button>
-            </Grid>
-        </VerticalStackLayout>
+
+                    </Button>
+                </Grid>
+            </Frame>
+          
     </Grid>
 </ContentPage>

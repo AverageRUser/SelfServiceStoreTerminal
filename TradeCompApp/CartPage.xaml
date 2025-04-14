@@ -8,32 +8,18 @@
              BackgroundColor="{StaticResource PageBackground}">
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="5">
         <!-- Шапка -->
-        <Frame Grid.Row="0" 
-               CornerRadius="16"
-               BackgroundColor="White"
-               Padding="15,10"
-               HasShadow="True">
-            <Label Text="Ваши товары" 
-                   FontSize="24"
-                   TextColor="{StaticResource PrimaryText}"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
+        <Frame Grid.Row="0"  CornerRadius="16"  BackgroundColor="White"  Padding="15,10"   HasShadow="True">
+            <Label Text="Ваши товары"     FontSize="24"   TextColor="{StaticResource PrimaryText}" FontAttributes="Bold"  HorizontalOptions="Center"/>
         </Frame>
 
-        <CollectionView x:Name="CartItemsList" 
-                          ItemsSource="{Binding CartProduction}"
-                          SelectionMode="None" Grid.Row="1">
+        <CollectionView x:Name="CartItemsList"    ItemsSource="{Binding CartProduction}" SelectionMode="None" Grid.Row="1">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                     
                     <DataTemplate>
-                        <Frame Padding="0" 
-                               Margin="0,0,0,15"
-                               CornerRadius="16"
-                               BackgroundColor="White"
-                               HasShadow="True" >
+                        <Frame Padding="0"   Margin="0,0,0,15" CornerRadius="16" BackgroundColor="White"   HasShadow="True" >
 
                             <Grid Padding="15" RowSpacing="10" ColumnSpacing="15">
                                 <Grid.RowDefinitions>
@@ -143,11 +129,7 @@
 
 
         <!-- Нижняя панель -->
-        <Frame Grid.Row="2"
-               CornerRadius="16"
-               BackgroundColor="White"
-               Padding="15,10"
-               HasShadow="True">
+        <Frame Grid.Row="2"   CornerRadius="16"      BackgroundColor="White"   Padding="15,10"      HasShadow="True">
             <Grid ColumnDefinitions="*,*,*,2*" ColumnSpacing="10">
                 <Button Text="Назад"
                         Clicked="OnContinueShoppingClicked"

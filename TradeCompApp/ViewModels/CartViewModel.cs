@@ -367,8 +367,15 @@ namespace TradeCompApp.ViewModels
             {
                 if (_categoryServices.TryGetValue(item.Product.CategoryId, out var services))
                 {
-                    item.Services = new ObservableCollection<ProductService>(services);
-
+                    item.Services = new ObservableCollection<ProductService>
+                    (
+                services.Select(s => new ProductService
+                {
+                    Name = s.Name,
+                    Price = s.Price,
+                    CategoryId = s.CategoryId
+                })
+            );
                 }
 
                 CartProduction.Add(item);

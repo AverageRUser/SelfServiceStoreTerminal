@@ -226,16 +226,12 @@ namespace TradeCompApp.ViewModels
        
         private void AddToCart(Product product)
         {
-            //if (SelectedProduct == null) return;
             CartViewModel.Instance.AddToCart(new CartItem { Product = product, Quantity = 1 });
 
-         //   SelectedProduct = null;
  
         }
         private void OnResetFilter()
-        {
-            // Сбрасываем выбранную категорию
-            
+        {   
             SelectedCategory = null;
             Filters.Clear();
             SearchText = string.Empty;
