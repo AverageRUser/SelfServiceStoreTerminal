@@ -10,7 +10,7 @@
 
             <!-- Заголовок с логотипом -->
             <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
-                <Image Source="dotnet_bot.png" WidthRequest="50" HeightRequest="50"/>
+              
                 <Label Text="Добро пожаловать!" 
                        Style="{StaticResource Headline}" 
                        TextColor="{StaticResource PrimaryText}"

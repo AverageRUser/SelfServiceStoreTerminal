@@ -13,6 +13,9 @@
         </Frame>
 
         <CollectionView x:Name="CartItemsList"    ItemsSource="{Binding CartProduction}" SelectionMode="None" Grid.Row="1">
+            <CollectionView.EmptyView>
+                <Label Text="Корзина пуста"    HorizontalOptions="Center"      VerticalOptions="Center"     FontSize="Medium" TextColor="Gray"/>
+            </CollectionView.EmptyView>
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
             </CollectionView.ItemsLayout>
