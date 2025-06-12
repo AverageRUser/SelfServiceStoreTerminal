@@ -1,4 +1,5 @@
-﻿using TradeCompApp.ViewModels;
+﻿using TradeCompApp.Database;
+using TradeCompApp.ViewModels;
 
 namespace TradeCompApp
 {
@@ -7,11 +8,13 @@ namespace TradeCompApp
         public App()
         {
             InitializeComponent();
-
+          
             MainPage = new AppShell();
         }
+      
         protected override async void OnStart()
         {
+            await DatabaseStatus.CheckConnectionAsync();
             await CartViewModel.Instance.InitializeSevices();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Util;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+
 using MimeKit;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -152,7 +153,7 @@ namespace TradeCompApp.ViewModels
             _databaseService = new DatabaseService();
             _AuthService = new GoogleAuthService();
             //InitializeSevices();
-          
+     
             RemoveCommand = new Command<CartItem>((CartItem item) =>
             {
                 CartProduction.Remove(item);
@@ -198,6 +199,7 @@ namespace TradeCompApp.ViewModels
             try
             {
                 _categoryServices = new Dictionary<int, ObservableCollection<ProductService>>();
+                
                 var categories = await _databaseService.GetAllCategories();
 
                 foreach (var category in categories)
@@ -237,6 +239,7 @@ namespace TradeCompApp.ViewModels
                 
             }
         }
+        
         private async void OnBackToMainPage()
         {
             CartProduction.Clear();
@@ -248,8 +251,15 @@ namespace TradeCompApp.ViewModels
 
         public async void OnPrintReceipt()
         {
-            Receipt receipt = await _databaseService.GetReceipt();
-        
+            Receipt receipt;
+            if (DatabaseStatus.IsConnected)
+            {
+                receipt = await _databaseService.GetReceipt();
+            }
+            else
+            {
+                receipt = new Receipt() { Address = "Москва ул. Харлампиева, 56", CreatedAt = DateTime.Now, EKLZ ="334242425", FIO = "Иванов Иван Иваныч", INN = "35435353533", KKM = "3535353535", Position = "Администратор" } ;
+            }
             //Для отладки
             ReceiptText = ReceiptBuilder(receipt).ToString();
 

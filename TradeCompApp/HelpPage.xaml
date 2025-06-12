@@ -87,7 +87,7 @@
 
 
             <Label Text="Если у вас возникли сложности, нажмите кнопку выше"  FontSize="14"    TextColor="{StaticResource SecondaryText}" HorizontalOptions="Center"/>
-
+            
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

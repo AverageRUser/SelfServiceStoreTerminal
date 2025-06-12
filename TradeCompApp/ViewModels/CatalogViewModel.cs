@@ -163,18 +163,21 @@ namespace TradeCompApp.ViewModels
        
         public async void LoadProducts()
         {
-            try
+            if(DatabaseStatus.IsConnected)
             {
-                var products = await _databaseService.GetAllProducts();
+               
+               var products = await _databaseService.GetAllProducts();
                 AllProducts = new ObservableCollection<Product>(products);
+       
+              
             }
-            catch (Exception ex)
+            else
             {
                 
                 AllProducts = new ObservableCollection<Product>
                 {
 
-                      new Product { Name = "Телевизор Samsung 4K", Price = 50000, ImageUrl = "dotnet_bot.png", CategoryId = 1, Specs = new List<TechSpec>{
+                      new Product { Name = "Телевизор Samsung 4K", Price = 50000, ImageUrl = "tv1.png", CategoryId = 1, Specs = new List<TechSpec>{
             new TechSpec { Name = "Диагональ", Value = "55", Unit = "дюймов" },
             new TechSpec { Name = "Разрешение", Value = "3840x2160" },
             new TechSpec{ Name = "Тип матрицы", Value = "QLED" },
@@ -186,8 +189,7 @@ namespace TradeCompApp.ViewModels
             new TechSpec{ Name = "Тип матрицы", Value = "OLED" },
             new TechSpec { Name = "HDR", Value = "HDR10+" }
         }  },
-                   // new Product { Name = "Ноутбук ASUS ROG", Price = 90000, ImageUrl = "laptop1.png", CategoryId = "Laptops" },
-                  //  new Product { Name = "Ноутбук MacBook Pro", Price = 120000, ImageUrl = "laptop2.png", CategoryId = "Laptops" },
+              
                     new Product { Name = "Смартфон iPhone 14", Price = 80000, ImageUrl = "phone1.png", CategoryId = 2,  Specs = new List<TechSpec>
         {
             new TechSpec { Name = "Диагональ экрана", Value = "6.1", Unit = "дюймов" },
@@ -197,6 +199,7 @@ namespace TradeCompApp.ViewModels
             new TechSpec{ Name = "Основная камера", Value = "48 Мп" },
             new TechSpec { Name = "Аккумулятор", Value = "3274", Unit = "мАч" }
         }},
+                     
                     new Product { Name = "Смартфон Samsung Galaxy S22", Price = 60000, ImageUrl = "phone2.png", CategoryId = 2 ,  Specs = new List<TechSpec>
         {
             new TechSpec { Name = "Диагональ экрана", Value = "6.1", Unit = "дюймов" },

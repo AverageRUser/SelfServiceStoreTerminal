@@ -39,12 +39,15 @@ public partial class CatalogPage : ContentPage
         if (Math.Abs(FiltersPanel.TranslationX) > 0)
         {
             // Открываем
+            
             FiltersPanel.IsVisible = true;
+            CatalogGrid.ColumnDefinitions[0].Width = 300;
             await FiltersPanel.TranslateTo(0, 0, 300, Easing.SinOut);
         }
         else
         {
             // Закрываем
+            CatalogGrid.ColumnDefinitions[0].Width = 1;
             await FiltersPanel.TranslateTo(-315, 0, 300, Easing.SinIn);
             FiltersPanel.IsVisible = false;
         }

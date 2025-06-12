@@ -7,7 +7,7 @@
                Title="Каталог товаров"
              BackgroundColor="{StaticResource PageBackground}" >
 
-    <Grid ColumnDefinitions="Auto,*,Auto"  RowDefinitions="Auto,*,Auto" RowSpacing="5">
+    <Grid x:Name="CatalogGrid" ColumnDefinitions="1, *"  RowDefinitions="Auto,*,auto" RowSpacing="5">
         <!-- Панель фильтров (скрытая по умолчанию) -->
         <Frame x:Name="FiltersPanel" 
                WidthRequest="300" 
@@ -16,7 +16,7 @@
                Padding="15"
                HasShadow="True"
                TranslationX="-315"
-               IsVisible="False" Grid.Column="0" Grid.RowSpan="3">
+               IsVisible="False" Grid.Column="0" Grid.RowSpan="3" >
 
             <VerticalStackLayout Spacing="15">
                 <!-- Заголовок панели -->
@@ -81,17 +81,19 @@
                        SearchCommand="{Binding SearchCommand}"
                        BackgroundColor="White"
                        CancelButtonColor="{StaticResource PrimaryButton}"
-                       TextColor="{StaticResource PrimaryText}" Grid.Row="0" Grid.Column="1"/>
+                       TextColor="{StaticResource PrimaryText}" Grid.Row="0" Grid.Column="1" />
 
             <!-- Список товаров -->
-    
-        <CollectionView x:Name="ProductList"   SelectionMode="None"  ItemsSource="{Binding FilteredProducts}" Grid.Row="1" Grid.Column="1" >
+
+        <CollectionView x:Name="ProductList"   SelectionMode="None"  ItemsSource="{Binding FilteredProducts}" Grid.Row="1" Grid.Column="1"  >
             <CollectionView.EmptyView>
                 <Label Text="Не удалось найти товар"    HorizontalOptions="Center"      VerticalOptions="Center"     FontSize="Medium" TextColor="Gray"/>
             </CollectionView.EmptyView>
+            
             <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
                 </CollectionView.ItemsLayout>
+            
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Padding="0"    CornerRadius="16" BackgroundColor="White" HasShadow="True">
@@ -171,9 +173,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        
-            <Frame Grid.Row="2" Grid.Column="1" CornerRadius="16" BackgroundColor="White" Padding="15,10" HasShadow="True">
-                <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
+
+        <Frame Grid.Row="2" Grid.Column="1" CornerRadius="16" BackgroundColor="White" Padding="15,10" HasShadow="True"  >
+                <Grid ColumnDefinitions="*,*,*,*,2*" ColumnSpacing="10">
                     <Button Text="Назад" 
                         Clicked="OnBackClicked"
                         BackgroundColor="{StaticResource SecondaryButton}"
@@ -184,7 +186,7 @@
 
                     <Button Text="Категории"  
                         Clicked="OnSelectCategoryClicked"
-                        BackgroundColor="{StaticResource SecondaryButton}"
+                        BackgroundColor="{StaticResource PrimaryButton}"
                         TextColor="White"
                         CornerRadius="10"
                         HeightRequest="50"

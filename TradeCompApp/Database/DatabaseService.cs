@@ -13,11 +13,14 @@ namespace TradeCompApp.Database
 {
     public class DatabaseService : DbContext
     {
-     
+       
+
         public async Task<string> GetConnectionString()
         {
             return await SecureStorage.GetAsync("mysql_connection");
+
         }
+      
         public async Task<List<Product>> GetAllProducts()
         {
             var products = new List<Product>();
@@ -27,8 +30,7 @@ namespace TradeCompApp.Database
                 connection.Open();
 
                 // Запрос для получения продуктов
-                var productCommand = new MySqlCommand(
-                    "SELECT Id, Name, Price, ImageUrl ,CategoryId FROM Products", connection);
+                var productCommand = new MySqlCommand("SELECT Id, Name, Price, ImageUrl ,CategoryId FROM Products", connection);
 
                 using (var reader = productCommand.ExecuteReader())
                 {

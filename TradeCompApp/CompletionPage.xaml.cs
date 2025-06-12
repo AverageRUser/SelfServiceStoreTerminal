@@ -12,7 +12,7 @@ public partial class CompletionPage : ContentPage
 
     private void OnPrintReceiptClicked(object sender, EventArgs e)
     {
-
+        
     }
 
     private void OnEmailReceiptClicked(object sender, EventArgs e)

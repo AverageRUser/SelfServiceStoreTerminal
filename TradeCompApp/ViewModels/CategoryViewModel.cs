@@ -48,17 +48,16 @@ namespace TradeCompApp.ViewModels
         }
         public async void LoadCategories()
         {
-            try
+            if (DatabaseStatus.IsConnected)
             {
                 var category = await _databaseService.GetAllCategories();
                 Categories = new ObservableCollection<Category>(category);
             }
-            catch (Exception ex)
+            else
             {
                 Categories = new ObservableCollection<Category>() {
-                new Category { Name = "Телевизоры", ImageUrl = "tv_category.png", Id = 1 },
-            new Category { Name = "Ноутбуки", ImageUrl = "laptop_category.png", Id = 4},
-            new Category { Name = "Смартфоны", ImageUrl = "phone_category.png", Id = 2 },
+                new Category { Name = "Телевизоры", ImageUrl = "tv1.png", Id = 1 },
+            new Category { Name = "Смартфоны", ImageUrl = "phone1.png", Id = 2 },
             new Category { Name = "Бытовая техника", ImageUrl = "appliance_category.png", Id = 3 }
             };
             }
